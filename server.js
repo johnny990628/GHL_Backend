@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
+const path = require('path')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
@@ -15,10 +16,13 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors({ credentials: true, origin: process.env.WEB_ORIGIN_URL }))
 app.use(cookieParser())
-app.use(express.static('./public'))
+app.use(express.static(path.resolve(__dirname, './public/build')))
 
 app.use('/ghl/auth', authRouter)
 app.use('/ghl/api', APIRouter)
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, './public/build', 'index.html'))
+})
 
 app.listen(port, () => {
     console.log(`Server is running at port ${port}`)
