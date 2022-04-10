@@ -28,7 +28,11 @@ router
     .patch(async (req, res) => {
         try {
             const { patientID } = req.params
-            const patient = await Patient.findOneAndUpdate({ id: patientID }, req.body, { returnDocument: 'after' })
+            const patient = await Patient.findOneAndUpdate(
+                { id: patientID },
+                { $set: { ...req.body }, $push: { reports: req.body.report } },
+                { returnDocument: 'after' }
+            )
             return res.status(200).json(patient)
         } catch (e) {
             return res.status(500).json({ message: e.message })
