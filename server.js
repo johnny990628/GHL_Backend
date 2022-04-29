@@ -6,7 +6,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 
-mongoose.connect(process.env.DB_URL)
+mongoose.connect(process.env.DB_URL).catch(error => console.log(error))
 
 const APIRouter = require('./routes/api')
 const { router: authRouter } = require('./routes/auth')

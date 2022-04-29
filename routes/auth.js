@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const USER = require('../models/user')
 
 const verifyToken = (req, res, next) => {
     const accessToken = req.cookies.accessToken || (req.headers['authorization'] ? req.headers['authorization'].split(' ').pop() : null)
@@ -56,16 +57,12 @@ router.route('/logout').post((req, res, next) => {
 
 router.route('/register').post(async (req, res) => {
     try {
-        let { username, password, name } = req.body
-        if (!name || !username || !password) return res.status(400).json({ message: 'missing required field' })
-        password = await bcrypt.hash(password, 10)
-
-        const result = await USER.register({ name, username, password })
-        if (!result) return res.status(400).json({ message: 'username was used' })
-
-        return res.status(200).json({ message: 'register successful', name, username })
-    } catch (error) {
-        return res.status(500).json({ error })
+        let user = new USER({ ...req.body, password: await bcrypt.hash(req.body.password, 10) })
+        user = await user.save()
+        user.password = null
+        return res.status(200).json(user)
+    } catch (e) {
+        return res.status(500).json({ message: e.message })
     }
 })
 
