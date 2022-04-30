@@ -6,6 +6,10 @@ const Patient = require('../../models/patient')
 router
     .route('/')
     .get(async (req, res) => {
+        /* 	
+            #swagger.tags = ['Patients']
+            #swagger.description = '取得病人' 
+        */
         try {
             const { limit, offset } = req.query
             const patients = await Patient.find()
@@ -18,6 +22,10 @@ router
         }
     })
     .post(async (req, res) => {
+        /* 	
+            #swagger.tags = ['Patients']
+            #swagger.description = '新增病人' 
+        */
         try {
             let patient = new Patient(req.body)
             patient = await patient.save()
@@ -30,6 +38,10 @@ router
 router
     .route('/:patientID')
     .get(async (req, res) => {
+        /* 	
+            #swagger.tags = ['Patients']
+            #swagger.description = '取得一個病人' 
+        */
         try {
             const { patientID } = req.params
             const patient = await Patient.find({ id: patientID })
@@ -39,6 +51,10 @@ router
         }
     })
     .patch(async (req, res) => {
+        /* 	
+            #swagger.tags = ['Patients']
+            #swagger.description = '修改病人' 
+        */
         try {
             const { patientID } = req.params
             const patient = await Patient.findOneAndUpdate({ id: patientID }, { $set: { ...req.body } }, { returnDocument: 'after' })
@@ -48,6 +64,10 @@ router
         }
     })
     .delete(async (req, res) => {
+        /* 	
+            #swagger.tags = ['Patients']
+            #swagger.description = '刪除病人' 
+        */
         try {
             const { patientID } = req.params
             const patient = await Patient.findOneAndDelete({ id: patientID })

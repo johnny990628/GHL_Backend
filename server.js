@@ -5,6 +5,10 @@ const path = require('path')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
+//swagger
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
+app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 mongoose.connect(process.env.DB_URL).catch(error => console.log(error))
 
