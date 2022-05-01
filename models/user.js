@@ -26,4 +26,4 @@ const userSchema = new Schema(
     { timestamps: true }
 )
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = { USER: mongoose.model('User', userSchema), ROLE: mongoose.model('Roles', roleSchema) }

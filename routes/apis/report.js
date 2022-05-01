@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const Report = require('../../models/report')
+const REPORT = require('../../models/report')
 
 router
     .route('/')
@@ -11,9 +11,17 @@ router
             #swagger.description = '取得報告' 
         */
         try {
-            const { patientID } = req.query
-            const patient = patientID ? await Report.find({ patientID }) : await Report.find()
-            return res.status(200).json(patient)
+            const { patientID, limit, offset } = req.query
+            const reports = patientID
+                ? await REPORT.find({ patientID })
+                : await REPORT.find()
+                      .limit(limit)
+                      .sort('createdAt')
+                      .skip(limit * offset)
+
+            const count = patientID ? await REPORT.find({ patientID }).countDocuments() : await REPORT.countDocuments()
+
+            return res.status(200).json({ count, results: reports })
         } catch (e) {
             return res.status(500).json({ message: e.message })
         }
@@ -25,7 +33,7 @@ router
         */
         try {
             const { patientID } = req.query
-            let report = new Report({ patientID, records: [req.body.report] })
+            let report = new REPORT({ patientID, records: [req.body.report] })
             report = await report.save()
             return res.status(200).json(report)
         } catch (e) {
@@ -42,7 +50,7 @@ router
         */
         try {
             const { reportID } = req.params
-            const report = await Report.find({ _id: reportID })
+            const report = await REPORT.findOne({ _id: reportID })
             return res.status(200).json(report)
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -55,7 +63,7 @@ router
         */
         try {
             const { reportID } = req.params
-            const report = await Report.findOneAndUpdate(
+            const report = await REPORT.findOneAndUpdate(
                 { _id: reportID },
                 { $push: { records: req.body.report } },
                 { returnDocument: 'after' }

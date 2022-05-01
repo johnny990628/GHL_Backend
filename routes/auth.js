@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const USER = require('../models/user')
+const { USER } = require('../models/user')
 
 const verifyToken = (req, res, next) => {
     const accessToken = req.cookies.accessToken || (req.headers['authorization'] ? req.headers['authorization'].split(' ').pop() : null)
@@ -23,17 +23,20 @@ const verifyToken = (req, res, next) => {
 }
 
 router.route('/login').post(async (req, res) => {
+    /* 	
+        #swagger.tags = ['Auth']
+        #swagger.description = '登入' 
+    */
     try {
-        const { username, password, name } = req.body
-        let user = await USER.login({ name, username, password })
-
+        const { username, password } = req.body
+        const user = await USER.findOne({ username })
         if (!user) return res.status(400).json({ message: 'user not found' })
 
         if (await bcrypt.compare(password, user.password)) {
             const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRECT_KEY, {
                 expiresIn: 6000000,
             })
-            delete user.password
+            user.password = null
             return res
                 .cookie('accessToken', accessToken, {
                     maxAge: 6000000,
@@ -52,10 +55,18 @@ router.route('/login').post(async (req, res) => {
 })
 
 router.route('/logout').post((req, res, next) => {
+    /* 	
+        #swagger.tags = ['Auth']
+        #swagger.description = '登出' 
+    */
     return res.clearCookie('accessToken').status(200).json({ message: 'logout successful' })
 })
 
 router.route('/register').post(async (req, res) => {
+    /* 	
+        #swagger.tags = ['Auth']
+        #swagger.description = '註冊' 
+    */
     try {
         let user = new USER({ ...req.body, password: await bcrypt.hash(req.body.password, 10) })
         user = await user.save()
@@ -67,6 +78,10 @@ router.route('/register').post(async (req, res) => {
 })
 
 router.route('/verify').post(async (req, res) => {
+    /* 	
+        #swagger.tags = ['Auth']
+        #swagger.description = '驗證' 
+    */
     try {
         const accessToken = req.cookies.accessToken || (req.headers['authorization'] ? req.headers['authorization'].split(' ').pop() : null)
 

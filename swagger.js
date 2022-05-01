@@ -11,6 +11,22 @@ const doc = {
             name: 'Reports',
             description: '報告',
         },
+        {
+            name: 'Users',
+            description: '使用者',
+        },
+        {
+            name: 'Auth',
+            description: '驗證',
+        },
+        {
+            name: 'Roles',
+            description: '使用者等級',
+        },
+        {
+            name: 'Department',
+            description: '部門',
+        },
     ],
 }
 
