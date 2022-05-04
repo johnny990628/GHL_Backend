@@ -11,7 +11,7 @@ router
             #swagger.description = '取得病人' 
         */
         try {
-            const { limit, offset, search } = req.query
+            const { limit, offset, search, sort, desc } = req.query
             if (!limit || !offset) return res.status(400).json({ message: 'Need a limit and offset' })
             const searchQuery = {
                 $or: [
@@ -28,8 +28,8 @@ router
             const patients = search
                 ? await PATIENT.find(searchQuery)
                 : await PATIENT.find()
+                      .sort({ [sort]: desc })
                       .limit(limit)
-                      .sort('createdAt')
                       .skip(limit * offset)
 
             const count = search ? await PATIENT.find(searchQuery).countDocuments() : await PATIENT.countDocuments()
