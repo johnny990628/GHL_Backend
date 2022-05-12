@@ -27,6 +27,10 @@ const doc = {
             name: 'Department',
             description: '部門',
         },
+        {
+            name: 'Schedule',
+            description: '排程',
+        },
     ],
 }
 

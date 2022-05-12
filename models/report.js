@@ -25,6 +25,7 @@ const recordSchema = new Schema({
 const reportSchema = new Schema(
     {
         patientID: { type: String, required: true },
+        procedureCode: String,
         records: [recordSchema],
     },
     { timestamps: true }

@@ -30,7 +30,6 @@ const patientSchema = new Schema(
         },
         department: String,
         address: String,
-        processing: Boolean,
     },
     { timestamps: true }
 )

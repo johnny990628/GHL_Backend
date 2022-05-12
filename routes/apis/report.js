@@ -32,8 +32,8 @@ router
             #swagger.description = '新增報告' 
         */
         try {
-            const { patientID } = req.query
-            let report = new REPORT({ patientID, records: [req.body.report] })
+            const { patientID, procedureCode } = req.query
+            let report = new REPORT({ patientID, procedureCode, records: [req.body.report] })
             report = await report.save()
             return res.status(200).json(report)
         } catch (e) {
