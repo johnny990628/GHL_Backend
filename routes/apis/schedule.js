@@ -15,7 +15,7 @@ router
             let query = {}
             if (procedureCode) query.procedureCode = procedureCode
             if (patientID) query.patientID = patientID
-            const schedule = await SCHEDULE.find(query)
+            const schedule = await SCHEDULE.find(query).populate('patient')
             return res.status(200).json({ results: schedule })
         } catch (e) {
             return res.status(500).json({ message: e.message })

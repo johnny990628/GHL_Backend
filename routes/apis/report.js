@@ -13,11 +13,12 @@ router
         try {
             const { patientID, limit, offset } = req.query
             const reports = patientID
-                ? await REPORT.find({ patientID })
+                ? await REPORT.find({ patientID }).populate('patient')
                 : await REPORT.find()
                       .limit(limit)
                       .sort('createdAt')
                       .skip(limit * offset)
+                      .populate('patient')
 
             const count = patientID ? await REPORT.find({ patientID }).countDocuments() : await REPORT.countDocuments()
 
@@ -29,11 +30,10 @@ router
     .post(async (req, res) => {
         /* 	
             #swagger.tags = ['Reports']
-            #swagger.description = '新增報告' 
+            #swagger.description = '加入排程' 
         */
         try {
-            const { patientID, procedureCode } = req.query
-            let report = new REPORT({ patientID, procedureCode, records: [req.body.report] })
+            let report = new REPORT({ ...req.body, status: 'pending' })
             report = await report.save()
             return res.status(200).json(report)
         } catch (e) {
@@ -65,7 +65,7 @@ router
             const { reportID } = req.params
             const report = await REPORT.findOneAndUpdate(
                 { _id: reportID },
-                { $push: { records: req.body.report } },
+                { $push: { records: req.body.report }, $set: { status: req.body.status } },
                 { returnDocument: 'after' }
             )
             return res.status(200).json(report)

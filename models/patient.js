@@ -8,10 +8,6 @@ const patientSchema = new Schema(
             required: true,
             unique: true,
         },
-        blood: {
-            type: String,
-            required: true,
-        },
         name: {
             type: String,
             required: true,
@@ -33,5 +29,20 @@ const patientSchema = new Schema(
     },
     { timestamps: true }
 )
+
+patientSchema.virtual('schedule', {
+    ref: 'Schedule',
+    localField: 'id',
+    foreignField: 'patientID',
+})
+
+patientSchema.virtual('blood', {
+    ref: 'Blood',
+    localField: 'id',
+    foreignField: 'patientID',
+    justOne: true,
+})
+
+patientSchema.set('toJSON', { virtuals: true })
 
 module.exports = mongoose.model('Patient', patientSchema)

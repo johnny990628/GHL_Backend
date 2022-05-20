@@ -25,10 +25,21 @@ const recordSchema = new Schema({
 const reportSchema = new Schema(
     {
         patientID: { type: String, required: true },
-        procedureCode: String,
+        procedureCode: { type: String, required: true },
         records: [recordSchema],
+        status: { type: String, required: true },
+        blood: { type: String, unique: true },
     },
     { timestamps: true }
 )
+
+reportSchema.virtual('patient', {
+    ref: 'Patient',
+    localField: 'patientID',
+    foreignField: 'id',
+    justOne: true,
+})
+
+reportSchema.set('toJSON', { virtuals: true })
 
 module.exports = mongoose.model('Report', reportSchema)

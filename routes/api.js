@@ -8,6 +8,7 @@ const userRouter = require('./apis/user')
 const roleRouter = require('./apis/role')
 const departmentRouter = require('./apis/department')
 const scheduleRouter = require('./apis/schedule')
+const bloodRouter = require('./apis/blood')
 const existRouter = require('./apis/exist')
 
 // router.use(verifyToken)
@@ -18,6 +19,7 @@ router.use('/user', userRouter)
 router.use('/role', roleRouter)
 router.use('/department', departmentRouter)
 router.use('/schedule', scheduleRouter)
+router.use('/blood', bloodRouter)
 router.use('/exist', existRouter)
 
 module.exports = router

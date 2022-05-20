@@ -13,26 +13,19 @@ router
         try {
             const { limit, offset, search, sort, desc } = req.query
             if (!limit || !offset) return res.status(400).json({ message: 'Need a limit and offset' })
+
             const searchQuery = {
-                $or: [
-                    { blood: { $regex: search } },
-                    { id: { $regex: search } },
-                    { name: { $regex: search } },
-                    { gender: { $regex: search } },
-                    { phone: { $regex: search } },
-                    { department: { $regex: search } },
-                    { address: { $regex: search } },
-                ],
+                $or: [{ id: { $regex: search } }, { name: { $regex: search } }],
             }
 
-            const patients = search
-                ? await PATIENT.find(searchQuery)
-                : await PATIENT.find()
-                      .sort({ [sort]: desc })
-                      .limit(limit)
-                      .skip(limit * offset)
+            const patients = await PATIENT.find(search ? searchQuery : {})
+                .sort({ [sort]: desc })
+                .limit(limit)
+                .skip(limit * offset)
+                .populate('schedule')
+                .populate('blood')
 
-            const count = search ? await PATIENT.find(searchQuery).countDocuments() : await PATIENT.countDocuments()
+            const count = await PATIENT.find(search ? searchQuery : {}).countDocuments()
 
             return res.status(200).json({ count, results: patients })
         } catch (e) {
@@ -62,7 +55,7 @@ router
         */
         try {
             const { patientID } = req.params
-            const patient = await PATIENT.findOne({ id: patientID })
+            const patient = await PATIENT.findOne({ id: patientID }).populate('blood')
             return res.status(200).json(patient)
         } catch (e) {
             return res.status(500).json({ message: e.message })

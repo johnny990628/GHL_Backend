@@ -1,6 +1,5 @@
 [
     {
-        "blood": "123",
         "id": "A123456789",
         "name": "李柏勳",
         "gender": "男",
@@ -10,7 +9,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "222",
         "id": "A123456732",
         "name": "李柏勳",
         "gender": "男",
@@ -20,7 +18,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "333",
         "id": "A123443125",
         "name": "李柏勳",
         "gender": "男",
@@ -30,7 +27,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "444",
         "id": "A123412789",
         "name": "李柏勳",
         "gender": "男",
@@ -40,7 +36,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "642",
         "id": "A12323569",
         "name": "李柏勳",
         "gender": "男",
@@ -50,7 +45,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "432",
         "id": "A12354439",
         "name": "李柏勳",
         "gender": "男",
@@ -60,7 +54,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "345",
         "id": "A123452119",
         "name": "李柏勳",
         "gender": "男",
@@ -70,7 +63,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "765",
         "id": "A124312389",
         "name": "李柏勳",
         "gender": "男",
@@ -80,7 +72,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "654",
         "id": "A123431289",
         "name": "李柏勳",
         "gender": "男",
@@ -90,7 +81,6 @@
         "address": "eroifjdjfo"
     },
     {
-        "blood": "553",
         "id": "A123443189",
         "name": "李柏勳",
         "gender": "男",

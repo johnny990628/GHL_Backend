@@ -3,10 +3,19 @@ const Schema = mongoose.Schema
 
 const scheduleSchema = new Schema(
     {
-        patientID: { type: String, required: true, ref: 'Patient' },
+        patientID: { type: String, required: true },
         procedureCode: { type: String, required: true },
     },
     { timestamps: true }
 )
+
+scheduleSchema.virtual('patient', {
+    ref: 'Patient',
+    localField: 'patientID',
+    foreignField: 'id',
+    justOne: true,
+})
+
+scheduleSchema.set('toJSON', { virtuals: true })
 
 module.exports = mongoose.model('Schedule', scheduleSchema)
