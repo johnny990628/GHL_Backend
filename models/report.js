@@ -28,7 +28,7 @@ const reportSchema = new Schema(
         procedureCode: { type: String, required: true },
         records: [recordSchema],
         status: { type: String, required: true },
-        blood: { type: String, unique: true },
+        blood: { type: String },
     },
     { timestamps: true }
 )

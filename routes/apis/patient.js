@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 
 const PATIENT = require('../../models/patient')
+const REPORT = require('../../models/report')
+const BLOOD = require('../../models/blood')
+const SCHEDULE = require('../../models/schedule')
 
 router
     .route('/')
@@ -42,6 +45,19 @@ router
             patient = await patient.save()
             return res.status(200).json(patient)
         } catch (e) {
+            return res.status(500).json({ message: e.message })
+        }
+    })
+    .delete(async (req, res) => {
+        try {
+            const { patientID } = req.body
+            const patient = await PATIENT.findOneAndDelete({ id: patientID })
+            await REPORT.findOneAndDelete({ patientID, status: 'pending' })
+            await SCHEDULE.findOneAndDelete({ patientID })
+            await BLOOD.findOneAndDelete({ patientID })
+            return res.status(200).json(patient)
+        } catch (err) {
+            console.log(err)
             return res.status(500).json({ message: e.message })
         }
     })

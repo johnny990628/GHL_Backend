@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 
 const SCHEDULE = require('../../models/schedule')
+const BLOOD = require('../../models/blood')
+const REPORT = require('../../models/report')
 
 router
     .route('/')
@@ -12,10 +14,11 @@ router
         */
         try {
             const { procedureCode, patientID } = req.query
+
             let query = {}
             if (procedureCode) query.procedureCode = procedureCode
             if (patientID) query.patientID = patientID
-            const schedule = await SCHEDULE.find(query).populate('patient')
+            const schedule = await SCHEDULE.find(query).populate('patient').populate('reports')
             return res.status(200).json({ results: schedule })
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -29,6 +32,18 @@ router
         try {
             let schedule = new SCHEDULE(req.body)
             schedule = await schedule.save()
+            return res.status(200).json(schedule)
+        } catch (e) {
+            return res.status(500).json({ message: e.message })
+        }
+    })
+    .delete(async (req, res) => {
+        try {
+            const { patientID } = req.body
+            const schedule = await SCHEDULE.findOneAndDelete({ patientID })
+            await REPORT.findOneAndDelete({ patientID, status: 'pending' })
+            await BLOOD.findOneAndDelete({ patientID })
+            if (!schedule) return res.status(404).json({ message: `Can't find the department` })
             return res.status(200).json(schedule)
         } catch (e) {
             return res.status(500).json({ message: e.message })
