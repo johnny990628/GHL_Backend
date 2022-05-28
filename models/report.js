@@ -13,14 +13,18 @@ const cancerSchema = new Schema({
     value: Schema.Types.Mixed,
 })
 
-const recordSchema = new Schema({
-    liver: [cancerSchema],
-    gallbladder: [cancerSchema],
-    kidney: [cancerSchema],
-    pancreas: [cancerSchema],
-    spleen: [cancerSchema],
-    suggestion: [cancerSchema],
-})
+const recordSchema = new Schema(
+    {
+        liver: [cancerSchema],
+        gallbladder: [cancerSchema],
+        kidney: [cancerSchema],
+        pancreas: [cancerSchema],
+        spleen: [cancerSchema],
+        suggestion: [cancerSchema],
+        id: { type: String, required: true, unique: true },
+    },
+    { _id: false }
+)
 
 const reportSchema = new Schema(
     {

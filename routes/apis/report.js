@@ -50,7 +50,7 @@ router
         */
         try {
             const { reportID } = req.params
-            const report = await REPORT.findOne({ _id: reportID })
+            const report = await REPORT.findOne({ _id: reportID }).populate('patient')
             return res.status(200).json(report)
         } catch (e) {
             return res.status(500).json({ message: e.message })
