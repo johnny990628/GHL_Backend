@@ -21,7 +21,7 @@ const recordSchema = new Schema(
         pancreas: [cancerSchema],
         spleen: [cancerSchema],
         suggestion: [cancerSchema],
-        id: { type: String, required: true, unique: true },
+        id: { type: String },
     },
     { _id: false }
 )

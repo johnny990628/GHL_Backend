@@ -17,18 +17,20 @@ router
             const { limit, offset, search, sort, desc } = req.query
             if (!limit || !offset) return res.status(400).json({ message: 'Need a limit and offset' })
 
-            const searchQuery = {
-                $or: [{ id: { $regex: search } }, { name: { $regex: search } }],
-            }
-
-            const patients = await PATIENT.find(search ? searchQuery : {})
+            const searchRe = new RegExp(search)
+            const searchQuery = search
+                ? {
+                      $or: [{ id: searchRe }, { name: searchRe }],
+                  }
+                : {}
+            const patients = await PATIENT.find(searchQuery)
                 .sort({ [sort]: desc })
                 .limit(limit)
                 .skip(limit * offset)
                 .populate('schedule')
                 .populate('blood')
 
-            const count = await PATIENT.find(search ? searchQuery : {}).countDocuments()
+            const count = await PATIENT.find(searchQuery).countDocuments()
 
             return res.status(200).json({ count, results: patients })
         } catch (e) {

@@ -11,17 +11,24 @@ router
             #swagger.description = '取得報告' 
         */
         try {
-            const { patientID, limit, offset } = req.query
-            const reports = patientID
-                ? await REPORT.find({ patientID }).populate('patient')
-                : await REPORT.find()
-                      .limit(limit)
-                      .sort('createdAt')
-                      .skip(limit * offset)
-                      .populate('patient')
+            const { search, limit, offset, sort, desc } = req.query
 
-            const count = patientID ? await REPORT.find({ patientID }).countDocuments() : await REPORT.countDocuments()
+            if (!limit || !offset) return res.status(400).json({ message: 'Need a limit and offset' })
 
+            const searchRe = new RegExp(search)
+            const searchQuery = search
+                ? {
+                      $or: [{ patientID: searchRe }, { blood: searchRe }, { procedureCode: searchRe }],
+                  }
+                : {}
+
+            const reports = await REPORT.find(searchQuery)
+                .limit(limit)
+                .sort({ [sort]: desc })
+                .skip(limit * offset)
+                .populate('patient')
+
+            const count = await REPORT.find(searchQuery).countDocuments()
             return res.status(200).json({ count, results: reports })
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -68,6 +75,16 @@ router
                 { $push: { records: req.body.report }, $set: { status: req.body.status } },
                 { returnDocument: 'after' }
             )
+            return res.status(200).json(report)
+        } catch (e) {
+            return res.status(500).json({ message: e.message })
+        }
+    })
+    .delete(async (req, res) => {
+        try {
+            const { reportID } = req.params
+            const report = await REPORT.findOneAndDelete({ _id: reportID })
+            if (!report) return res.status(404).json({ message: `Can't find the report` })
             return res.status(200).json(report)
         } catch (e) {
             return res.status(500).json({ message: e.message })
