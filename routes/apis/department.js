@@ -11,8 +11,22 @@ router
             #swagger.description = '取得部門' 
         */
         try {
-            const departments = await DEPARTMENT.find()
-            return res.status(200).json({ results: departments })
+            const { limit, offset, search, sort, desc } = req.query
+            if (!limit || !offset) return res.status(400).json({ message: 'Need a limit and offset' })
+            const searchRe = new RegExp(search)
+            const searchQuery = search
+                ? {
+                      $or: [{ name: searchRe }, { address: searchRe }],
+                  }
+                : {}
+
+            const departments = await DEPARTMENT.find(searchQuery)
+                .sort({ [sort]: desc })
+                .limit(limit)
+                .skip(limit * offset)
+
+            const count = await DEPARTMENT.find(searchQuery).countDocuments()
+            return res.status(200).json({ count, results: departments })
         } catch (e) {
             return res.status(500).json({ message: e.message })
         }

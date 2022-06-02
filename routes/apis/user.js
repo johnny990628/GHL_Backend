@@ -26,15 +26,15 @@ router.route('/').get(async (req, res) => {
 })
 
 router
-    .route('/:username')
+    .route('/:_id')
     .get(async (req, res) => {
         /* 	
             #swagger.tags = ['Users']
             #swagger.description = '取得一位使用者' 
         */
         try {
-            const { username } = req.params
-            const user = await USER.findOne({ username }).select({ password: 0 })
+            const { _id } = req.params
+            const user = await USER.findOne({ _id }).select({ password: 0 })
             if (!user) return res.status(404).json({ message: `Can't find the user` })
             return res.status(200).json(user)
         } catch (e) {
@@ -47,9 +47,9 @@ router
             #swagger.description = '更新一位使用者' 
         */
         try {
-            const { username } = req.params
+            const { _id } = req.params
             const user = await USER.findOneAndUpdate(
-                { username },
+                { _id },
                 { $set: { ...req.body, password: await bcrypt.hash(req.body.password, 10) } },
                 { returnDocument: 'after' }
             ).select({ password: 0 })
@@ -66,8 +66,8 @@ router
             #swagger.description = '刪除一位使用者' 
         */
         try {
-            const { username } = req.params
-            const user = await USER.findOneAndDelete({ username }).select({ password: 0 })
+            const { _id } = req.params
+            const user = await USER.findOneAndDelete({ _id }).select({ password: 0 })
             if (!user) return res.status(404).json({ message: `Can't find the user` })
 
             return res.status(200).json(user)
