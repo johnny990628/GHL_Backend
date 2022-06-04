@@ -46,15 +46,15 @@ router
     })
 
 router
-    .route('/:id')
+    .route('/:_id')
     .get(async (req, res) => {
         /* 	
             #swagger.tags = ['Department']
             #swagger.description = '取得單一部門' 
         */
         try {
-            const { id } = req.params
-            const department = await DEPARTMENT.findOne({ _id: id })
+            const { _id } = req.params
+            const department = await DEPARTMENT.findOne({ _id })
             if (!department) return res.status(404).json({ message: `Can't find the department` })
             return res.status(200).json(department)
         } catch (e) {
@@ -67,8 +67,8 @@ router
             #swagger.description = '更新一個部門' 
         */
         try {
-            const { id } = req.params
-            const department = await DEPARTMENT.findOneAndUpdate({ _id: id }, { $set: { ...req.body } }, { returnDocument: 'after' })
+            const { _id } = req.params
+            const department = await DEPARTMENT.findOneAndUpdate({ _id }, { $set: { ...req.body } }, { returnDocument: 'after' })
             if (!department) return res.status(404).json({ message: `Can't find the department` })
             return res.status(200).json(department)
         } catch (e) {
@@ -81,8 +81,8 @@ router
             #swagger.description = '刪除部門' 
         */
         try {
-            const { id } = req.params
-            const department = await DEPARTMENT.findOneAndDelete({ _id: id })
+            const { _id } = req.params
+            const department = await DEPARTMENT.findOneAndDelete({ _id })
             if (!department) return res.status(404).json({ message: `Can't find the department` })
             return res.status(200).json(department)
         } catch (e) {
