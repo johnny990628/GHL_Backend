@@ -40,6 +40,7 @@ router.route('/login').post(async (req, res) => {
             return res
                 .cookie('accessToken', accessToken, {
                     maxAge: 6000000,
+                    // maxAge: 6000,
                     secure: false, //set true if using https
                     httpOnly: true, //can't access from javascript
                     sameSite: true,

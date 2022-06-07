@@ -12,7 +12,7 @@ const bloodRouter = require('./apis/blood')
 const existRouter = require('./apis/exist')
 const countRouter = require('./apis/count')
 
-// router.use(verifyToken)
+router.use(verifyToken)
 
 router.use('/patient', patientRouter)
 router.use('/report', reportRouter)
