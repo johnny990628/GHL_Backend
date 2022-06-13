@@ -87,11 +87,12 @@ router.route('/verify').post(async (req, res) => {
         const accessToken = req.cookies.accessToken || (req.headers['authorization'] ? req.headers['authorization'].split(' ').pop() : null)
 
         if (accessToken) {
-            jwt.verify(accessToken, process.env.JWT_SECRECT_KEY, (err, token) => {
+            jwt.verify(accessToken, process.env.JWT_SECRECT_KEY, async (err, token) => {
                 if (err) {
                     return res.status(403).json({ message: 'Invalid token' })
                 } else {
-                    return res.status(200).json({ message: 'Valid token' })
+                    const user = await USER.findOne({ _id: token.id }).select({ password: 0 })
+                    return res.status(200).json({ message: 'Valid token', user, token: accessToken })
                 }
             })
         } else {
