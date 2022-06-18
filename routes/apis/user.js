@@ -10,14 +10,22 @@ router.route('/').get(async (req, res) => {
             #swagger.description = '取得使用者' 
         */
     try {
-        const { limit, offset } = req.query
-        const users = await USER.find()
+        const { limit, offset, search, sort, desc } = req.query
+        if (!limit || !offset) return res.status(400).json({ message: 'Need a limit and offset' })
+        const searchRe = new RegExp(search)
+        const searchQuery = search
+            ? {
+                  $or: [{ username: searchRe }, { name: searchRe }],
+              }
+            : {}
+
+        const users = await USER.find(searchQuery)
             .limit(limit)
-            .sort('createdAt')
+            .sort({ [sort]: desc })
             .skip(limit * offset)
             .select({ password: 0 })
 
-        const count = await USER.countDocuments()
+        const count = await USER.find(searchQuery).countDocuments()
 
         return res.status(200).json({ count, results: users })
     } catch (e) {
