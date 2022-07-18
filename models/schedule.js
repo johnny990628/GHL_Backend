@@ -22,6 +22,12 @@ scheduleSchema.virtual('reports', {
     localField: 'patientID',
     foreignField: 'patientID',
 })
+scheduleSchema.virtual('blood', {
+    ref: 'Blood',
+    localField: 'patientID',
+    foreignField: 'patientID',
+    justOne: true,
+})
 
 scheduleSchema.set('toJSON', { virtuals: true })
 

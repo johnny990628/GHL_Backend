@@ -19,7 +19,7 @@ router
             if (procedureCode) query.procedureCode = procedureCode
             if (patientID) query.patientID = patientID
 
-            const schedule = await SCHEDULE.find(query).populate('patient').populate('reports')
+            const schedule = await SCHEDULE.find(query).populate('patient').populate('reports').populate('blood')
             const count = await SCHEDULE.find(query).countDocuments()
 
             return res.status(200).json({ results: schedule, count })
