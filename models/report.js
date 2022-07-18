@@ -33,6 +33,7 @@ const reportSchema = new Schema(
         records: [recordSchema],
         status: { type: String, required: true },
         blood: { type: String },
+        userID: { type: String },
     },
     { timestamps: true }
 )
@@ -41,6 +42,12 @@ reportSchema.virtual('patient', {
     ref: 'Patient',
     localField: 'patientID',
     foreignField: 'id',
+    justOne: true,
+})
+reportSchema.virtual('user', {
+    ref: 'User',
+    localField: 'userID',
+    foreignField: '_id',
     justOne: true,
 })
 

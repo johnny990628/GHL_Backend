@@ -27,6 +27,7 @@ router
                 .sort({ [sort]: desc })
                 .skip(limit * offset)
                 .populate('patient')
+                .populate('user')
 
             const count = await REPORT.find(searchQuery).countDocuments()
             return res.status(200).json({ count, results: reports })
@@ -57,7 +58,7 @@ router
         */
         try {
             const { reportID } = req.params
-            const report = await REPORT.findOne({ _id: reportID }).populate('patient')
+            const report = await REPORT.findOne({ _id: reportID }).populate('patient').populate('user')
             return res.status(200).json(report)
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -72,7 +73,7 @@ router
             const { reportID } = req.params
             const report = await REPORT.findOneAndUpdate(
                 { _id: reportID },
-                { $push: { records: req.body.report }, $set: { status: req.body.status } },
+                { $push: { records: req.body.report }, $set: { status: req.body.status, userID: req.body.userID } },
                 { returnDocument: 'after' }
             )
             return res.status(200).json(report)
