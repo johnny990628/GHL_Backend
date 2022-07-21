@@ -2,7 +2,7 @@
 GHL_Backend is a noSQL-based NodeJS server for managing the medical reports built on [Express](https://expressjs.com/zh-tw/) .
 
 ![](https://github.com/johnny990628/GHL_Frontend/blob/master/public/ghl.gif)
-<img src="./public/logo.png" width="20%" />
+<img src="https://github.com/johnny990628/GHL_Frontend/blob/master/public/logo.png" width="20%" />
 
 ## Installation
 
