@@ -14,7 +14,7 @@ router
             #swagger.description = '取得病人' 
         */
         try {
-            const { limit, offset, search, sort, desc } = req.query
+            const { limit, offset, search, sort, desc, status } = req.query
             if (!limit || !offset) return res.status(400).json({ message: 'Need a limit and offset' })
 
             const searchRe = new RegExp(search)
@@ -23,16 +23,68 @@ router
                       $or: [{ id: searchRe }, { name: searchRe }],
                   }
                 : {}
-            const patients = await PATIENT.find(searchQuery)
+
+            let statusMatch = {}
+            if (status) {
+                switch (status) {
+                    case 'finish':
+                        statusMatch['schedule.0'] = { $exists: false }
+                        statusMatch['report.0'] = { $exists: true }
+                        break
+                    case 'yet':
+                        statusMatch['schedule.0'] = { $exists: false }
+                        statusMatch['report.0'] = { $exists: false }
+                        break
+                    case 'processing':
+                        statusMatch['schedule.0'] = { $exists: true }
+                        break
+                    default:
+                        break
+                }
+            }
+
+            const patients = await PATIENT.aggregate([
+                { $match: searchQuery },
+                {
+                    $lookup: {
+                        from: 'schedules',
+                        localField: 'id',
+                        foreignField: 'patientID',
+                        as: 'schedule',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'reports',
+                        localField: 'id',
+                        foreignField: 'patientID',
+                        as: 'report',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'bloods',
+                        localField: 'id',
+                        foreignField: 'patientID',
+                        as: 'blood',
+                    },
+                },
+                {
+                    $match: statusMatch,
+                },
+            ])
                 .sort({ [sort]: desc })
-                .limit(limit)
+                .limit(Number(limit))
                 .skip(limit * offset)
-                .populate('schedule')
-                .populate('blood')
 
-            const count = await PATIENT.find(searchQuery).countDocuments()
-
-            return res.status(200).json({ count, results: patients })
+            // const patients = await PATIENT.find(searchQuery)
+            //     .sort({ [sort]: desc })
+            //     .limit(limit)
+            //     .skip(limit * offset)
+            //     .populate('schedule')
+            //     .populate('blood')
+            //     .populate('report')
+            return res.status(200).json({ count: patients.length, results: patients })
         } catch (e) {
             return res.status(500).json({ message: e.message })
         }

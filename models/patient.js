@@ -30,18 +30,25 @@ const patientSchema = new Schema(
     { timestamps: true }
 )
 
-patientSchema.virtual('schedule', {
-    ref: 'Schedule',
-    localField: 'id',
-    foreignField: 'patientID',
-})
+// patientSchema.virtual('schedule', {
+//     ref: 'Schedule',
+//     localField: 'id',
+//     foreignField: 'patientID',
+// })
 
-patientSchema.virtual('blood', {
-    ref: 'Blood',
-    localField: 'id',
-    foreignField: 'patientID',
-    justOne: true,
-})
+// patientSchema.virtual('blood', {
+//     ref: 'Blood',
+//     localField: 'id',
+//     foreignField: 'patientID',
+//     justOne: true,
+// })
+
+// patientSchema.virtual('report', {
+//     ref: 'Report',
+//     localField: 'id',
+//     foreignField: 'patientID',
+//     justOne: false,
+// })
 
 patientSchema.set('toJSON', { virtuals: true })
 
