@@ -72,10 +72,12 @@ router
                 {
                     $match: statusMatch,
                 },
+                { $sort: { [sort]: Number(desc) } },
+                { $skip: Number(limit) * Number(offset) },
+                { $limit: Number(limit) },
             ])
-                .sort({ [sort]: desc })
-                .limit(Number(limit))
-                .skip(limit * offset)
+
+            const count = await PATIENT.find(searchQuery).countDocuments()
 
             // const patients = await PATIENT.find(searchQuery)
             //     .sort({ [sort]: desc })
@@ -84,7 +86,7 @@ router
             //     .populate('schedule')
             //     .populate('blood')
             //     .populate('report')
-            return res.status(200).json({ count: patients.length, results: patients })
+            return res.status(200).json({ count, results: patients })
         } catch (e) {
             return res.status(500).json({ message: e.message })
         }
