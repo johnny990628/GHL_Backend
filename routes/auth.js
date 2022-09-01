@@ -30,9 +30,10 @@ router.route('/login').post(async (req, res) => {
     try {
         const { username, password } = req.body
         const user = await USER.findOne({ username })
-        if (!user) return res.status(400).json({ message: 'user not found' })
+        if (!user) return res.status(401).json({ message: '查無使用者' })
 
         if (await bcrypt.compare(password, user.password)) {
+            if (user.role === 0) return res.status(403).json({ message: '使用者權限不足，等待管理員審核' })
             const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRECT_KEY, {
                 expiresIn: 6000000,
             })
@@ -48,7 +49,7 @@ router.route('/login').post(async (req, res) => {
                 .status(200)
                 .json({ message: 'login successful', user, token: accessToken })
         } else {
-            return res.status(400).json({ message: 'password incorrect' })
+            return res.status(401).json({ message: '密碼錯誤' })
         }
     } catch (error) {
         return res.status(500).json({ error })
@@ -69,7 +70,7 @@ router.route('/register').post(async (req, res) => {
         #swagger.description = '註冊' 
     */
     try {
-        let user = new USER({ ...req.body, password: await bcrypt.hash(req.body.password, 10) })
+        let user = new USER({ ...req.body, password: await bcrypt.hash(req.body.password, 10), role: 0 })
         user = await user.save()
         user.password = null
         return res.status(200).json(user)

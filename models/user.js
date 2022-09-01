@@ -1,16 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const roleSchema = new Schema(
-    {
-        name: String,
-        level: Number,
-    },
-    {
-        _id: false,
-    }
-)
-
 const userSchema = new Schema(
     {
         username: {
@@ -26,9 +16,9 @@ const userSchema = new Schema(
             type: String,
             required: true,
         },
-        roles: [roleSchema],
+        role: Number,
     },
     { timestamps: true }
 )
 
-module.exports = { USER: mongoose.model('User', userSchema), ROLE: mongoose.model('Roles', roleSchema) }
+module.exports = { USER: mongoose.model('User', userSchema) }

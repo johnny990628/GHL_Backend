@@ -56,11 +56,9 @@ router
         */
         try {
             const { _id } = req.params
-            const user = await USER.findOneAndUpdate(
-                { _id },
-                { $set: { ...req.body, password: await bcrypt.hash(req.body.password, 10) } },
-                { returnDocument: 'after' }
-            ).select({ password: 0 })
+            const user = await USER.findOneAndUpdate({ _id }, { $set: { ...req.body } }, { returnDocument: 'after' }).select({
+                password: 0,
+            })
             if (!user) return res.status(404).json({ message: `Can't find the user` })
 
             return res.status(200).json(user)
