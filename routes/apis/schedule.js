@@ -46,7 +46,7 @@ router
             const schedule = await SCHEDULE.findOneAndDelete({ patientID })
             await REPORT.findOneAndDelete({ patientID, status: 'pending' })
             await BLOOD.findOneAndDelete({ patientID })
-            if (!schedule) return res.status(404).json({ message: `Can't find the department` })
+            if (!schedule) return res.status(404).json({ message: '找不到排程資料' })
             return res.status(200).json(schedule)
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -61,7 +61,7 @@ router.route('/:_id').delete(async (req, res) => {
     try {
         const { _id } = req.params
         const schedule = await SCHEDULE.findOneAndDelete({ _id })
-        if (!schedule) return res.status(404).json({ message: `Can't find the department` })
+        if (!schedule) return res.status(404).json({ message: '找不到報告資料' })
         return res.status(200).json(schedule)
     } catch (e) {
         return res.status(500).json({ message: e.message })

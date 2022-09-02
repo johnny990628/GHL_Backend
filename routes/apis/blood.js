@@ -42,7 +42,7 @@ router
         try {
             const { bloodNumber } = req.params
             const blood = await BLOOD.findOne({ number: bloodNumber })
-            if (!blood) return res.status(404).json({ message: `Can't find the blood` })
+            if (!blood) return res.status(404).json({ message: '找不到血液資料' })
             return res.status(200).json(blood)
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -56,7 +56,7 @@ router
         try {
             const { bloodNumber } = req.params
             const blood = await BLOOD.findOneAndDelete({ number: bloodNumber })
-            if (!blood) return res.status(404).json({ message: `Can't find the blood` })
+            if (!blood) return res.status(404).json({ message: '找不到血液資料' })
             return res.status(200).json(blood)
         } catch (e) {
             return res.status(500).json({ message: e.message })

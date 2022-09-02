@@ -55,7 +55,7 @@ router
         try {
             const { _id } = req.params
             const department = await DEPARTMENT.findOne({ _id })
-            if (!department) return res.status(404).json({ message: `Can't find the department` })
+            if (!department) return res.status(404).json({ message: '找不到部門資料' })
             return res.status(200).json(department)
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -69,7 +69,7 @@ router
         try {
             const { _id } = req.params
             const department = await DEPARTMENT.findOneAndUpdate({ _id }, { $set: { ...req.body } }, { returnDocument: 'after' })
-            if (!department) return res.status(404).json({ message: `Can't find the department` })
+            if (!department) return res.status(404).json({ message: '找不到部門資料' })
             return res.status(200).json(department)
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -83,7 +83,7 @@ router
         try {
             const { _id } = req.params
             const department = await DEPARTMENT.findOneAndDelete({ _id })
-            if (!department) return res.status(404).json({ message: `Can't find the department` })
+            if (!department) return res.status(404).json({ message: '找不到部門資料' })
             return res.status(200).json(department)
         } catch (e) {
             return res.status(500).json({ message: e.message })

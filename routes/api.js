@@ -10,6 +10,7 @@ const scheduleRouter = require('./apis/schedule')
 const bloodRouter = require('./apis/blood')
 const existRouter = require('./apis/exist')
 const countRouter = require('./apis/count')
+const statsRouter = require('./apis/stats')
 
 router.use('/department', departmentRouter)
 
@@ -21,5 +22,6 @@ router.use('/schedule', scheduleRouter)
 router.use('/blood', bloodRouter)
 router.use('/exist', existRouter)
 router.use('/count', countRouter)
+router.use('/stats', statsRouter)
 
 module.exports = router

@@ -85,7 +85,7 @@ router
         try {
             const { reportID } = req.params
             const report = await REPORT.findOneAndDelete({ _id: reportID })
-            if (!report) return res.status(404).json({ message: `Can't find the report` })
+            if (!report) return res.status(404).json({ message: '找不到報告資料' })
             return res.status(200).json(report)
         } catch (e) {
             return res.status(500).json({ message: e.message })

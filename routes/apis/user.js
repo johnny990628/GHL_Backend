@@ -43,7 +43,7 @@ router
         try {
             const { _id } = req.params
             const user = await USER.findOne({ _id }).select({ password: 0 })
-            if (!user) return res.status(404).json({ message: `Can't find the user` })
+            if (!user) return res.status(404).json({ message: '找不到使用者資料' })
             return res.status(200).json(user)
         } catch (e) {
             return res.status(500).json({ message: e.message })
@@ -59,7 +59,7 @@ router
             const user = await USER.findOneAndUpdate({ _id }, { $set: { ...req.body } }, { returnDocument: 'after' }).select({
                 password: 0,
             })
-            if (!user) return res.status(404).json({ message: `Can't find the user` })
+            if (!user) return res.status(404).json({ message: '找不到使用者資料' })
 
             return res.status(200).json(user)
         } catch (e) {
@@ -74,7 +74,7 @@ router
         try {
             const { _id } = req.params
             const user = await USER.findOneAndDelete({ _id }).select({ password: 0 })
-            if (!user) return res.status(404).json({ message: `Can't find the user` })
+            if (!user) return res.status(404).json({ message: '找不到使用者資料' })
 
             return res.status(200).json(user)
         } catch (e) {
