@@ -321,6 +321,320 @@ const calculateReportandPeople = async matchConditions => {
     return { numsOfPeople, numsOfReport }
 }
 
+const calculateReportandPeopleForPrint = async matchConditions => {
+    const numsOfPeopleGroupByDay = await REPORT.aggregate([
+        { $match: matchConditions },
+        {
+            $lookup: {
+                from: 'patients',
+                localField: 'patientID',
+                foreignField: 'id',
+                as: 'patient',
+            },
+        },
+        {
+            $project: {
+                gender: { $first: '$patient.gender' },
+                createdAt: 1,
+            },
+        },
+        {
+            $project: {
+                male: { $cond: [{ $eq: ['$gender', 'm'] }, 1, 0] },
+                female: { $cond: [{ $eq: ['$gender', 'f'] }, 1, 0] },
+                createdAt: 1,
+            },
+        },
+        {
+            $addFields: {
+                created_date: { $dateToParts: { date: { $toDate: { $toLong: '$createdAt' } } } },
+            },
+        },
+        {
+            $group: {
+                _id: {
+                    day: '$created_date.day',
+                    month: '$created_date.month',
+                    year: '$created_date.year',
+                },
+                male: { $sum: '$male' },
+                female: { $sum: '$female' },
+                total: { $sum: 1 },
+            },
+        },
+        {
+            $project: {
+                _id: 0,
+                male: {
+                    label: '男',
+                    name: 'male',
+                    value: '$male',
+                },
+                female: {
+                    label: '女',
+                    name: 'female',
+                    value: '$female',
+                },
+                total: {
+                    label: '總人數',
+                    name: 'total',
+                    value: '$total',
+                },
+                date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+            },
+        },
+        {
+            $sort: { date: 1 },
+        },
+    ])
+
+    const numsOfOrganGroupByDay = await REPORT.aggregate([
+        {
+            $match: matchConditions,
+        },
+        {
+            $project: {
+                lastReport: {
+                    $arrayElemAt: ['$records', -1],
+                },
+                createdAt: 1,
+            },
+        },
+        {
+            $project: {
+                sizeOfLiver: {
+                    $size: '$lastReport.liver',
+                },
+                sizeOfGallbladder: {
+                    $size: '$lastReport.gallbladder',
+                },
+                sizeOfKidney: {
+                    $size: '$lastReport.kidney',
+                },
+                sizeOfPancreas: {
+                    $size: '$lastReport.pancreas',
+                },
+                sizeOfSpleen: {
+                    $size: '$lastReport.spleen',
+                },
+                sizeOfSuggestion: {
+                    $size: '$lastReport.suggestion',
+                },
+                createdAt: 1,
+            },
+        },
+        {
+            $addFields: {
+                created_date: { $dateToParts: { date: { $toDate: { $toLong: '$createdAt' } } } },
+            },
+        },
+        {
+            $group: {
+                _id: {
+                    day: '$created_date.day',
+                    month: '$created_date.month',
+                    year: '$created_date.year',
+                },
+                liver: {
+                    $sum: { $cond: [{ $ne: ['$sizeOfLiver', 0] }, 1, 0] },
+                },
+                gallbladder: {
+                    $sum: { $cond: [{ $ne: ['$sizeOfGallbladder', 0] }, 1, 0] },
+                },
+                kidney: {
+                    $sum: { $cond: [{ $ne: ['$sizeOfKidney', 0] }, 1, 0] },
+                },
+                pancreas: {
+                    $sum: { $cond: [{ $ne: ['$sizeOfPancreas', 0] }, 1, 0] },
+                },
+                spleen: {
+                    $sum: { $cond: [{ $ne: ['$sizeOfSpleen', 0] }, 1, 0] },
+                },
+                spleen: {
+                    $sum: { $cond: [{ $ne: ['$sizeOfSpleen', 0] }, 1, 0] },
+                },
+                suggestion: {
+                    $sum: { $cond: [{ $ne: ['$sizeOfSuggestion', 0] }, 1, 0] },
+                },
+            },
+        },
+        {
+            $project: {
+                _id: 0,
+                liver: {
+                    name: 'liver',
+                    label: '肝臟異常',
+                    amount: '$liver',
+                },
+                gallbladder: { name: 'gallbladder', label: '膽囊異常', amount: '$gallbladder' },
+                kidney: { name: 'kidney', label: '腎臟異常', amount: '$kidney' },
+                pancreas: { name: 'pancreas', label: '胰臟異常', amount: '$pancreas' },
+                spleen: { name: 'spleen', label: '脾臟異常', amount: '$spleen' },
+                suggestion: { name: 'suggestion', label: '需進一步檢查', amount: '$suggestion' },
+                date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+            },
+        },
+    ])
+
+    const organList = [
+        {
+            name: 'liver',
+            cancer: [
+                {
+                    name: 'FLD',
+                    label: '脂肪肝',
+                },
+                {
+                    name: 'SLPL',
+                    label: '疑似肝實質病變',
+                },
+                { name: 'LPL', label: '肝實質病變' },
+                {
+                    name: 'LC',
+                    label: '肝硬化',
+                },
+                {
+                    name: 'PLD',
+                    label: '肝囊腫',
+                },
+                {
+                    name: 'HEM',
+                    label: '血管瘤',
+                },
+                {
+                    name: 'IC',
+                    label: '肝內鈣化點',
+                },
+                {
+                    name: 'HEP',
+                    label: '肝腫瘤(疑似肝癌)',
+                },
+                {
+                    name: 'HEPU',
+                    label: '肝腫瘤(性質不明)',
+                },
+            ],
+        },
+        {
+            name: 'gallbladder',
+            cancer: [
+                {
+                    name: 'CL',
+                    label: '膽結石',
+                },
+                {
+                    name: 'GP',
+                    label: '膽息肉',
+                },
+            ],
+        },
+        {
+            name: 'kidney',
+            cancer: [
+                {
+                    name: 'KS',
+                    label: '腎結石',
+                },
+                {
+                    name: 'RC',
+                    label: '腎囊腫',
+                },
+                {
+                    name: 'KC',
+                    label: '腎腫瘤',
+                },
+            ],
+        },
+        {
+            name: 'pancreas',
+            cancer: [],
+        },
+        {
+            name: 'spleen',
+            cancer: [
+                {
+                    name: 'ES',
+                    label: '脾臟腫大',
+                },
+            ],
+        },
+        {
+            name: 'suggestion',
+            cancer: [
+                {
+                    name: 'datetime',
+                    label: '請每隔幾年幾月定期追蹤一次',
+                },
+                {
+                    name: 'examination',
+                    label: '請至各大醫院近一步詳細檢查',
+                },
+            ],
+        },
+    ]
+
+    const aggregates = organList.map(({ name, cancer }) => {
+        const cancerGroup = cancer.reduce(
+            (a, b) => ({ ...a, [b.name]: { $sum: { $cond: [{ $eq: [`$lastReport.${name}.name`, b.name] }, 1, 0] } } }),
+            {}
+        )
+        const cancerProject = cancer.reduce((a, b) => ({ ...a, [b.name]: { name: b.name, label: b.label, value: `$${b.name}` } }), {})
+        return [
+            {
+                $match: matchConditions,
+            },
+            {
+                $project: {
+                    lastReport: {
+                        $arrayElemAt: ['$records', -1],
+                    },
+                    createdAt: 1,
+                },
+            },
+
+            {
+                $unwind: `$lastReport.${name}`,
+            },
+            {
+                $addFields: {
+                    created_date: { $dateToParts: { date: { $toDate: { $toLong: '$createdAt' } } } },
+                },
+            },
+            {
+                $group: {
+                    _id: {
+                        day: '$created_date.day',
+                        month: '$created_date.month',
+                        year: '$created_date.year',
+                    },
+                    ...cancerGroup,
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                    ...cancerProject,
+                },
+            },
+        ]
+    })
+
+    const [liver, gallbladder, kidney, pancreas, spleen, suggestion] = await Promise.all(
+        aggregates.map(async aggregate => {
+            return await REPORT.aggregate(aggregate)
+        })
+    )
+
+    const numsOfCancerGroupByDay = [...liver, ...gallbladder, ...kidney, ...pancreas, ...spleen, ...suggestion].reduce((groups, item) => {
+        let groupsFind = groups.find(g => g.date === item.date)
+        let groupsFilter = groups.filter(g => g.date !== item.date)
+        return groupsFind ? [...groupsFilter, { ...groupsFind, ...item }] : [...groups, item]
+    }, [])
+
+    return { numsOfPeopleGroupByDay, numsOfOrganGroupByDay, numsOfCancerGroupByDay }
+}
+
 router.route('/').get(async (req, res) => {
     try {
         const { dateFrom, dateTo } = req.query
@@ -343,7 +657,10 @@ router.route('/').get(async (req, res) => {
                   }
 
         const { numsOfPeople, numsOfReport } = await calculateReportandPeople(matchConditions)
-        return res.status(200).json({ numsOfPeople, numsOfReport })
+        const { numsOfPeopleGroupByDay, numsOfOrganGroupByDay, numsOfCancerGroupByDay } = await calculateReportandPeopleForPrint(
+            matchConditions
+        )
+        return res.status(200).json({ numsOfPeople, numsOfReport, numsOfPeopleGroupByDay, numsOfOrganGroupByDay, numsOfCancerGroupByDay })
     } catch (e) {
         return res.status(500).json({ message: e.message })
     }
@@ -415,41 +732,11 @@ router.route('/:departmentID').get(async (req, res) => {
 
         const { numsOfPeople, numsOfReport } = await calculateReportandPeople(matchConditions)
 
-        // let reportsOfDepartment = await REPORT.aggregate([
-        //     {
-        //         $match: matchConditions,
-        //     },
-        //     // {
-        //     //     $lookup: {
-        //     //         from: 'patients',
-        //     //         localField: 'patientID',
-        //     //         foreignField: 'id',
-        //     //         as: 'patient',
-        //     //     },
-        //     // },
-        //     // {
-        //     //     $lookup: {
-        //     //         from: 'departments',
-        //     //         localField: 'patient.department',
-        //     //         foreignField: 'name',
-        //     //         as: 'department',
-        //     //     },
-        //     // },
+        const { numsOfPeopleGroupByDay, numsOfOrganGroupByDay, numsOfCancerGroupByDay } = await calculateReportandPeopleForPrint(
+            matchConditions
+        )
 
-        //     // {
-        //     //     $match: {
-        //     //         'department._id': mongoose.Types.ObjectId(departmentID),
-        //     //     },
-        //     // },
-        //     {
-        //         $project: {
-        //             procedureCode: 0,
-        //             blood: 0,
-        //         },
-        //     },
-        // ])
-
-        return res.status(200).json({ numsOfPeople, numsOfReport })
+        return res.status(200).json({ numsOfPeople, numsOfReport, numsOfPeopleGroupByDay, numsOfOrganGroupByDay, numsOfCancerGroupByDay })
     } catch (e) {
         return res.status(500).json({ message: e.message })
     }
