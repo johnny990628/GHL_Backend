@@ -233,7 +233,7 @@ const calculateReportandPeople = async matchConditions => {
     const numsOfPeople = [
         {
             name: 'total',
-            label: '超音波檢查總次數',
+            label: '超音波檢查次數',
             amount: totalReports.total || 0,
             totalFemale: {
                 name: 'totalFemale',
