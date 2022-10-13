@@ -739,7 +739,7 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                   },
 
                   {
-                      $unwind: `$lastReport.${name}`,
+                      $unwind: { path: `$lastReport.${name}`, preserveNullAndEmptyArrays: true },
                   },
                   {
                       $addFields: {
@@ -782,7 +782,7 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                   },
 
                   {
-                      $unwind: `$lastReport.${name}`,
+                      $unwind: { path: `$lastReport.${name}`, preserveNullAndEmptyArrays: true },
                   },
                   {
                       $addFields: {
@@ -813,7 +813,6 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
 
     const [liver, gallbladder, kidney, pancreas, spleen, suggestion] = await Promise.all(
         aggregates.map(async aggregate => {
-            console.log(await REPORT.aggregate(aggregate))
             return await REPORT.aggregate(aggregate)
         })
     )
