@@ -456,7 +456,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                               name: 'total',
                               value: '$total',
                           },
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                           time: { $concat: [{ $toString: '$_id.hour' }, ':00'] },
                       },
                   },
@@ -522,7 +524,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                               name: 'total',
                               value: '$total',
                           },
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                       },
                   },
                   {
@@ -616,7 +620,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                           pancreas: { name: 'pancreas', label: '胰臟異常', amount: '$pancreas' },
                           spleen: { name: 'spleen', label: '脾臟異常', amount: '$spleen' },
                           suggestion: { name: 'suggestion', label: '需進一步檢查', amount: '$suggestion' },
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                           time: { $concat: [{ $toString: '$_id.hour' }, ':00'] },
                       },
                   },
@@ -704,7 +710,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                           pancreas: { name: 'pancreas', label: '胰臟異常', amount: '$pancreas' },
                           spleen: { name: 'spleen', label: '脾臟異常', amount: '$spleen' },
                           suggestion: { name: 'suggestion', label: '需進一步檢查', amount: '$suggestion' },
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                       },
                   },
               ])
@@ -752,7 +760,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                   {
                       $project: {
                           _id: 0,
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                           time: { $concat: [{ $toString: '$_id.hour' }, ':00'] },
                           ...cancerProject,
                       },
@@ -792,7 +802,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                   {
                       $project: {
                           _id: 0,
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                           ...cancerProject,
                       },
                   },
@@ -801,6 +813,7 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
 
     const [liver, gallbladder, kidney, pancreas, spleen, suggestion] = await Promise.all(
         aggregates.map(async aggregate => {
+            console.log(await REPORT.aggregate(aggregate))
             return await REPORT.aggregate(aggregate)
         })
     )
