@@ -456,7 +456,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                               name: 'total',
                               value: '$total',
                           },
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                           time: { $concat: [{ $toString: '$_id.hour' }, ':00'] },
                       },
                   },
@@ -522,7 +524,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                               name: 'total',
                               value: '$total',
                           },
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                       },
                   },
                   {
@@ -616,7 +620,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                           pancreas: { name: 'pancreas', label: '胰臟異常', amount: '$pancreas' },
                           spleen: { name: 'spleen', label: '脾臟異常', amount: '$spleen' },
                           suggestion: { name: 'suggestion', label: '需進一步檢查', amount: '$suggestion' },
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                           time: { $concat: [{ $toString: '$_id.hour' }, ':00'] },
                       },
                   },
@@ -704,7 +710,9 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
                           pancreas: { name: 'pancreas', label: '胰臟異常', amount: '$pancreas' },
                           spleen: { name: 'spleen', label: '脾臟異常', amount: '$spleen' },
                           suggestion: { name: 'suggestion', label: '需進一步檢查', amount: '$suggestion' },
-                          date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
                       },
                   },
               ])
@@ -715,47 +723,92 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
             {}
         )
         const cancerProject = cancer.reduce((a, b) => ({ ...a, [b.name]: { name: b.name, label: b.label, value: `$${b.name}` } }), {})
-        return [
-            {
-                $match: matchConditions,
-            },
-            {
-                $project: {
-                    lastReport: {
-                        $arrayElemAt: ['$records', -1],
-                    },
-                    createdAt: 1,
-                },
-            },
 
-            {
-                $unwind: `$lastReport.${name}`,
-            },
-            {
-                $addFields: {
-                    created_date: { $dateToParts: { date: { $toDate: { $toLong: '$createdAt' } }, timezone: 'Asia/Taipei' } },
-                },
-            },
-            {
-                $group: {
-                    _id: {
-                        hour: '$created_date.hour',
-                        day: '$created_date.day',
-                        month: '$created_date.month',
-                        year: '$created_date.year',
-                    },
-                    ...cancerGroup,
-                },
-            },
-            {
-                $project: {
-                    _id: 0,
-                    date: { $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }] },
-                    time: { $concat: [{ $toString: '$_id.hour' }, ':00'] },
-                    ...cancerProject,
-                },
-            },
-        ]
+        return type === 'single'
+            ? [
+                  {
+                      $match: matchConditions,
+                  },
+                  {
+                      $project: {
+                          lastReport: {
+                              $arrayElemAt: ['$records', -1],
+                          },
+                          createdAt: 1,
+                      },
+                  },
+
+                  {
+                      $unwind: { path: `$lastReport.${name}`, preserveNullAndEmptyArrays: true },
+                  },
+                  {
+                      $addFields: {
+                          created_date: { $dateToParts: { date: { $toDate: { $toLong: '$createdAt' } }, timezone: 'Asia/Taipei' } },
+                      },
+                  },
+                  {
+                      $group: {
+                          _id: {
+                              hour: '$created_date.hour',
+                              day: '$created_date.day',
+                              month: '$created_date.month',
+                              year: '$created_date.year',
+                          },
+                          ...cancerGroup,
+                      },
+                  },
+                  {
+                      $project: {
+                          _id: 0,
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
+                          time: { $concat: [{ $toString: '$_id.hour' }, ':00'] },
+                          ...cancerProject,
+                      },
+                  },
+              ]
+            : [
+                  {
+                      $match: matchConditions,
+                  },
+                  {
+                      $project: {
+                          lastReport: {
+                              $arrayElemAt: ['$records', -1],
+                          },
+                          createdAt: 1,
+                      },
+                  },
+
+                  {
+                      $unwind: { path: `$lastReport.${name}`, preserveNullAndEmptyArrays: true },
+                  },
+                  {
+                      $addFields: {
+                          created_date: { $dateToParts: { date: { $toDate: { $toLong: '$createdAt' } }, timezone: 'Asia/Taipei' } },
+                      },
+                  },
+                  {
+                      $group: {
+                          _id: {
+                              day: '$created_date.day',
+                              month: '$created_date.month',
+                              year: '$created_date.year',
+                          },
+                          ...cancerGroup,
+                      },
+                  },
+                  {
+                      $project: {
+                          _id: 0,
+                          date: {
+                              $concat: [{ $toString: '$_id.year' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.day' }],
+                          },
+                          ...cancerProject,
+                      },
+                  },
+              ]
     })
 
     const [liver, gallbladder, kidney, pancreas, spleen, suggestion] = await Promise.all(
@@ -765,8 +818,10 @@ const calculateReportandPeopleForPrint = async (matchConditions, type) => {
     )
 
     const numsOfCancerGroupByDay = [...liver, ...gallbladder, ...kidney, ...pancreas, ...spleen, ...suggestion].reduce((groups, item) => {
-        let groupsFind = groups.find(g => g.date === item.date && g.time === item.time)
-        let groupsFilter = groups.filter(g => g.date !== item.date && g.time !== item.time)
+        let groupsFind =
+            type === 'single' ? groups.find(g => g.date === item.date && g.time === item.time) : groups.find(g => g.date === item.date)
+        let groupsFilter =
+            type === 'single' ? groups.filter(g => g.date !== item.date && g.time !== item.time) : groups.filter(g => g.date !== item.date)
         return groupsFind ? [...groupsFilter, { ...groupsFind, ...item }] : [...groups, item]
     }, [])
 
