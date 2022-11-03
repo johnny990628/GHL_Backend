@@ -4,6 +4,12 @@ GHL_Backend is a noSQL-based NodeJS server for managing the medical reports buil
 ![](https://github.com/johnny990628/GHL_Frontend/blob/master/public/ghl.gif)
 <img src="https://github.com/johnny990628/GHL_Frontend/blob/master/public/logo.png" width="20%" />
 
+## TODO List
+- [ ] pull FHIR Branch from [Yang-Jiaxiang](https://github.com/Yang-Jiaxiang/GHL_BackendToFHIR)
+- [ ] test FHIR api
+- [ ] merge FHIR Branch
+- [ ] Complete track1 FHIR api requirement
+
 ## Installation
 
 #### requirement
