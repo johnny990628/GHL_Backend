@@ -66,16 +66,9 @@ router
 
             const count = await PATIENT.find(searchQuery).countDocuments();
 
-            // const patients = await PATIENT.find(searchQuery)
-            //     .sort({ [sort]: desc })
-            //     .limit(limit)
-            //     .skip(limit * offset)
-            //     .populate('schedule')
-            //     .populate('blood')
-            //     .populate('report')
-
             const fhirJSON = await patientConvertToFHIR(patients);
-            return res.status(200).json({ fhirJSON });
+
+            return res.status(200).json({ entry: fhirJSON });
         } catch (e) {
             return res.status(500).json({ message: e.message });
         }
@@ -140,7 +133,7 @@ router
                 { returnDocument: "after" }
             );
 
-            const  responseJSON= await patientConvertToFHIR([patient]);
+            const responseJSON = await patientConvertToFHIR([patient]);
             return res.status(200).json(responseJSON[0]);
         } catch (e) {
             return res.status(500).json({ message: e.message });
