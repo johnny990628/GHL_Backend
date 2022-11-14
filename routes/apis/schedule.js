@@ -53,19 +53,34 @@ router
         }
     })
 
-router.route('/:_id').delete(async (req, res) => {
-    /* 	
+router
+    .route('/:_id')
+    .patch(async (req, res) => {
+        /* 	
+            #swagger.tags = ['Schedule']
+            #swagger.description = '修改排程' 
+        */
+        try {
+            const { scheduleID } = req.params
+            const schedule = await SCHEDULE.findOneAndUpdate({ id: scheduleID }, { $set: { ...req.body } }, { returnDocument: 'after' })
+            return res.status(200).json(schedule)
+        } catch (e) {
+            return res.status(500).json({ message: e.message })
+        }
+    })
+    .delete(async (req, res) => {
+        /* 	
         #swagger.tags = ['Schedule']
         #swagger.description = '刪除排程' 
     */
-    try {
-        const { _id } = req.params
-        const schedule = await SCHEDULE.findOneAndDelete({ _id })
-        if (!schedule) return res.status(404).json({ message: '找不到報告資料' })
-        return res.status(200).json(schedule)
-    } catch (e) {
-        return res.status(500).json({ message: e.message })
-    }
-})
+        try {
+            const { _id } = req.params
+            const schedule = await SCHEDULE.findOneAndDelete({ _id })
+            if (!schedule) return res.status(404).json({ message: '找不到報告資料' })
+            return res.status(200).json(schedule)
+        } catch (e) {
+            return res.status(500).json({ message: e.message })
+        }
+    })
 
 module.exports = router

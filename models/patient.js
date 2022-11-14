@@ -26,6 +26,7 @@ const patientSchema = new Schema(
         },
         department: String,
         address: String,
+        creator: Schema.ObjectId,
     },
     { timestamps: true }
 )

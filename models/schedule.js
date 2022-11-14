@@ -6,6 +6,7 @@ const scheduleSchema = new Schema(
         patientID: { type: String, required: true },
         reportID: { type: String },
         procedureCode: { type: String, required: true },
+        status: { type: String, required: true },
     },
     { timestamps: true }
 )
