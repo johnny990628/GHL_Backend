@@ -61,8 +61,8 @@ router
             #swagger.description = '修改排程' 
         */
         try {
-            const { scheduleID } = req.params
-            const schedule = await SCHEDULE.findOneAndUpdate({ id: scheduleID }, { $set: { ...req.body } }, { returnDocument: 'after' })
+            const { _id } = req.params
+            const schedule = await SCHEDULE.findOneAndUpdate({ _id: _id }, { $set: { ...req.body } }, { returnDocument: 'after' })
             return res.status(200).json(schedule)
         } catch (e) {
             return res.status(500).json({ message: e.message })
