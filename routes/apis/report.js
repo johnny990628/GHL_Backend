@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const REPORT = require('../../models/report')
+const SCHEDULE = require('../../models/schedule')
 
 router
     .route('/')
@@ -85,6 +86,7 @@ router
         try {
             const { reportID } = req.params
             const report = await REPORT.findOneAndDelete({ _id: reportID })
+            const schedule = await SCHEDULE.findOneAndDelete({ reportID })
             if (!report) return res.status(404).json({ message: '找不到報告資料' })
             return res.status(200).json(report)
         } catch (e) {
