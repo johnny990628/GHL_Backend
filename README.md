@@ -9,40 +9,41 @@ GHL_Backend is a noSQL-based NodeJS server for managing the medical reports buil
 - [ ] test FHIR api
 - [ ] merge FHIR Branch
 - [ ] Complete track1 FHIR api requirement
+- [ ] Docker compose file
 
-## Installation
-
-#### requirement
+## Requirements
 - [Node.js](https://nodejs.org/zh-tw/download/) >= 16
 - [MongoDB](https://www.mongodb.com/) >= 5
 - [Express](https://expressjs.com/zh-tw/) > 4
 
-#### Clone the repo
+## Installation
+### Step1-Clone the repo
 ```bash
 git clone https://github.com/johnny990628/GHL_backend
 cd GHL_backend
 ```
 
-#### Install dependencies
+### Step2-Install dependencies
 ```bash
 npm install
 ```
 
-## Configuration
+### Step3-Configuration
 
-#### dotenv
+#### Modify your `.env` file in root folder
 
+#### dotenv template
 ```bash
-PORT="your server port"
+PORT="3090"
 DB_URL="mongodb://localhost:27017/ghl"
-WEB_ORIGIN_URL="your web app port"
-JWT_SECRECT_KEY="jwt secrect key"
+WEB_ORIGIN_URL="http://localhost:3091"
+JWT_SECRECT_KEY="your jwt secrect key"
 ```
 
-#### Deploy
+### Step4-Deploy
 ```bash
 node server.js
 ```
 
-## Author
+## Author 🎉
 [johnny990628](https://github.com/johnny990628)
