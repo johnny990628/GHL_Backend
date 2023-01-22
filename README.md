@@ -58,3 +58,4 @@ docker run -d -p 3090:3080 --name GHL_Backend -it --restart=always mongo:6.0.3
 + [Install specific NodeJS version in Ubuntu](https://www.educative.io/answers/how-to-install-nodejs-on-ubuntu)
 + [Day5: 實作撰寫第一個 Dockerfile](https://ithelp.ithome.com.tw/articles/10191016)
 + [Docker Packaging your software](https://docs.docker.com/build/building/packaging/)
++ [解決Dockerfile RUN npm install找不到package.json](https://ithelp.ithome.com.tw/articles/10204227)
