@@ -47,3 +47,14 @@ node server.js
 
 ## Author 🎉
 [johnny990628](https://github.com/johnny990628)
+
+## References
++ [Docker Port Mapping](https://www.baeldung.com/linux/assign-port-docker-container#:~:text=Port%20mapping%20is%20used%20to,redirected%20into%20the%20Docker%20container.)
++ [Docker node container exited](https://stackoverflow.com/questions/44288504/why-is-my-docker-node-container-exiting)
++ [Docker Run with command](https://docs.docker.com/engine/reference/commandline/run/)
+```bash
+docker run -d -p 3090:3080 --name GHL_Backend -it --restart=always mongo:6.0.3
+```
++ [Install specific NodeJS version in Ubuntu](https://www.educative.io/answers/how-to-install-nodejs-on-ubuntu)
++ [Day5: 實作撰寫第一個 Dockerfile](https://ithelp.ithome.com.tw/articles/10191016)
++ [Docker Packaging your software](https://docs.docker.com/build/building/packaging/)
