@@ -25,3 +25,12 @@ EXPOSE 3080
 CMD mongod --fork --logpath /home/GHL_backend/mongodb.log && node server.js
 # 啟動Container時自動啟動mongodb 與 GHL_backend
 # https://stackoverflow.com/questions/51191378/what-is-the-point-of-using-pm2-and-docker-together
+
+# ------------------------------------
+# 把image發佈到Docker Hub上的操作紀錄
+# 先把local端的image用remote端命名並加上tag
+# docker image tag ghl_backend:latest kiwiteam/glc:ghl_backend_latest
+# docker image tag ghl_backend:latest kiwiteam/glc:ghl_backend_v1.0.0
+# 最後把標上remote tag 的images push 到Docker Hub上
+# docker image push --all-tags kiwiteam/glc
+# ------------------------------------

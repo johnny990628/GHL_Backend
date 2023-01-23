@@ -68,3 +68,4 @@ docker run -d -p 3090:3080 --name GHL_Backend -it --restart=always ghl_backend
 + [在Docker內無需使用pm2](https://stackoverflow.com/questions/51191378/what-is-the-point-of-using-pm2-and-docker-together)
 + [Run MongoDB as background service in Linux](https://serverfault.com/questions/157705/how-can-i-run-mongod-in-the-background-on-unix-mac-osx)
 + [Dockerfile CMD multiple commands](https://stackoverflow.com/questions/46797348/docker-cmd-exec-form-for-multiple-command-execution)
++ [Push image to Docker Hub](https://docs.docker.com/engine/reference/commandline/push/)
