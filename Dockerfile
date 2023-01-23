@@ -19,7 +19,7 @@ RUN npm install bcrypt
 # https://stackoverflow.com/questions/15809611/bcrypt-invalid-elf-header-when-running-node-app
 
 # Add default GLC user in MongoDB
-RUN mongod --fork --logpath /home/GHL_backend/mongodb.log && mongosh ghl --eval 'db.users.insertOne({"username": "admin","password": "$2b$10$0Dv2Y4EkFlJwEdAC2.P9Mu9.gwv.bDgjUPewF35UQATYEjDMJwFdm","name": "admin","role": 3,"createdAt": {"$date": {"$numberLong": "1674477502677"}},"updatedAt": {"$date": {"$numberLong": "1674477502677"}},"__v": 0});'
+RUN mongod --fork --logpath /home/GHL_backend/mongodb.log && mongosh ghl --eval 'db.users.insertOne({"username": "admin","password": "$2b$10$0Dv2Y4EkFlJwEdAC2.P9Mu9.gwv.bDgjUPewF35UQATYEjDMJwFdm","name": "admin","role": 3,"createdAt": 1674477502677,"updatedAt":1674477502677,"__v": 0});'
 
 # final configuration
 ENV GHL_backend_HOME=/home/GHL_backend
