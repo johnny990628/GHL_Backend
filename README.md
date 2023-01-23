@@ -69,3 +69,5 @@ docker run -d -p 3090:3080 --name GHL_Backend -it --restart=always ghl_backend
 + [Run MongoDB as background service in Linux](https://serverfault.com/questions/157705/how-can-i-run-mongod-in-the-background-on-unix-mac-osx)
 + [Dockerfile CMD multiple commands](https://stackoverflow.com/questions/46797348/docker-cmd-exec-form-for-multiple-command-execution)
 + [Push image to Docker Hub](https://docs.docker.com/engine/reference/commandline/push/)
++ [MongoDB insert data](https://www.mongodb.com/docs/manual/reference/method/db.collection.insert/)
++ [透過mongosh cli直接新增資料到MongoDB](https://stackoverflow.com/questions/4837673/how-to-execute-mongo-commands-through-shell-scripts)
