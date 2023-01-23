@@ -20,7 +20,8 @@ RUN npm install bcrypt
 
 # final configuration
 ENV GHL_backend_HOME=/home/GHL_backend
-EXPOSE 3080
 # CMD cd GHL_backend_HOME #有設定WORKDIR, 這行與上方那行的ENV已經使用不到了
-CMD node server.js
+EXPOSE 3080
+CMD mongod --fork --logpath /home/GHL_backend/mongodb.log && node server.js
+# 啟動Container時自動啟動mongodb 與 GHL_backend
 # https://stackoverflow.com/questions/51191378/what-is-the-point-of-using-pm2-and-docker-together
