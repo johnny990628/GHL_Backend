@@ -53,6 +53,9 @@ build-docker-image.bat
 docker run -d -p 3090:3080 --name GHL_Backend -it --restart=always ghl_backend
 ```
 
+### 使用Docker的注意事項
++ 如果你已經在Local端成功架設前後端並且順利登入，請記得要登出後再執行前後端的Docker Container，否則你的前端會無法順利運作
+
 ## Author 🎉
 [johnny990628](https://github.com/johnny990628)
 
