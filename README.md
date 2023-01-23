@@ -64,3 +64,5 @@ docker run -d -p 3090:3080 --name GHL_Backend -it --restart=always ghl_backend
 + [Day5: 實作撰寫第一個 Dockerfile](https://ithelp.ithome.com.tw/articles/10191016)
 + [Docker Packaging your software](https://docs.docker.com/build/building/packaging/)
 + [解決Dockerfile RUN npm install找不到package.json](https://ithelp.ithome.com.tw/articles/10204227)
++ [Node bcrypt套件在Linux上Error](https://stackoverflow.com/questions/15809611/bcrypt-invalid-elf-header-when-running-node-app)
++ [在Docker內無需使用pm2](https://stackoverflow.com/questions/51191378/what-is-the-point-of-using-pm2-and-docker-together)

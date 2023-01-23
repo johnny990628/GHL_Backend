@@ -15,10 +15,12 @@ WORKDIR /home/GHL_backend
 # install app
 COPY ./ ./
 RUN npm install
-RUN npm install pm2 -g
+RUN npm install bcrypt
+# https://stackoverflow.com/questions/15809611/bcrypt-invalid-elf-header-when-running-node-app
 
 # final configuration
 ENV GHL_backend_HOME=/home/GHL_backend
 EXPOSE 3080
 # CMD cd GHL_backend_HOME #有設定WORKDIR, 這行與上方那行的ENV已經使用不到了
-CMD pm2 start server.js
+CMD node server.js
+# https://stackoverflow.com/questions/51191378/what-is-the-point-of-using-pm2-and-docker-together
