@@ -5,7 +5,7 @@ GHL_Backend is a noSQL-based NodeJS server for managing the medical reports buil
 <img src="https://github.com/johnny990628/GHL_Frontend/blob/master/public/logo.png" width="20%" />
 
 ## TODO List
-- [ ] pull FHIR Branch from [Yang-Jiaxiang](https://github.com/Yang-Jiaxiang/GHL_BackendToFHIR)
+- [ ] pull FHIR Branch from [Kiwi-FHIR-Convert-Kit](https://github.com/Yang-Jiaxiang/Kiwi-FHIR-Convert-Kit)
 - [ ] test FHIR api
 - [ ] merge FHIR Branch
 - [ ] Complete track1 FHIR api requirement
@@ -43,6 +43,12 @@ JWT_SECRECT_KEY="jwt secrect key"
 ```bash
 node server.js
 ```
+
+## API Documentation
+### Visit this URL after you deployed the server
++ http://localhost:3080/api-doc/
+
+**port 3080 should match your `.env` config**
 
 ## Author
 [johnny990628](https://github.com/johnny990628)
