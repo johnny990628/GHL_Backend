@@ -5,10 +5,10 @@ GHL_Backend is a noSQL-based NodeJS server for managing the medical reports buil
 <img src="https://github.com/johnny990628/GHL_Frontend/blob/master/public/logo.png" width="20%" />
 
 ## TODO List
-- [ ] pull FHIR Branch from [Kiwi-FHIR-Convert-Kit](https://github.com/Yang-Jiaxiang/Kiwi-FHIR-Convert-Kit)
-- [ ] test FHIR api
-- [ ] merge FHIR Branch
-- [ ] Complete track1 FHIR api requirement
+- [x] pull FHIR Branch from [Kiwi-FHIR-Convert-Kit](https://github.com/Yang-Jiaxiang/Kiwi-FHIR-Convert-Kit)
+- [x] test FHIR api
+- [x] merge FHIR Branch
+- [ ] Complete [TWcore](https://twcore.mohw.gov.tw/ig/profiles-and-extensions.html) track1 [FHIR Patient](https://twcore.mohw.gov.tw/ig/StructureDefinition-Patient-twcore.html) api requirements
 - [ ] Docker compose file
 
 ## Requirements
