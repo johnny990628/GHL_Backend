@@ -62,7 +62,7 @@ module.exports = function patientConvertToFHIR(data) {
                         use: "mobile",
                         period: {
                             start: "2022-07-31",
-                            end: "2024-07-31",
+                            end: "2069-07-31",
                         },
                     },
                 ],
@@ -70,6 +70,7 @@ module.exports = function patientConvertToFHIR(data) {
                 birthDate: birth(),
                 address: [
                     {
+                        /*
                         extension: [
                             {
                                 url: "https://twcore.mohw.gov.tw/fhir/StructureDefinition/tw-section",
@@ -104,7 +105,8 @@ module.exports = function patientConvertToFHIR(data) {
                                 valueString: "B室",
                             },
                         ],
-                        text: "臺北市大同區大有里19鄰承德路三段52巷6弄210號2樓B室",
+                        */
+                        /*
                         line: ["承德路"],
                         city: "臺北市",
                         district: "大同區",
@@ -123,6 +125,7 @@ module.exports = function patientConvertToFHIR(data) {
                                 },
                             ],
                         },
+                        */
                         country: "TW",
                     },
                 ],
@@ -139,6 +142,7 @@ module.exports = function patientConvertToFHIR(data) {
                         url: "https://2.bp.blogspot.com/-v3yEwItkXKQ/VaMN_1Nx6TI/AAAAAAAAvhM/zDXN_eZw_UE/s800/youngwoman_42.png",
                     },
                 ],
+                /*
                 contact: [
                     {
                         relationship: [
@@ -170,6 +174,7 @@ module.exports = function patientConvertToFHIR(data) {
                         ],
                     },
                 ],
+                */
                 communication: [
                     {
                         language: {
@@ -182,9 +187,11 @@ module.exports = function patientConvertToFHIR(data) {
                         },
                     },
                 ],
-                // managingOrganization: {
-                //     reference: "Organization/org-hosp-example",
-                // },
+                /*
+                managingOrganization: {
+                    reference: "Organization/org-hosp-example",
+                },
+                */
             },
         };
         fhirArray.push(fhirJSON);
