@@ -51,12 +51,6 @@ node server.js
 
 **port 3080 should match your `.env` config**
 
-## API Documentation
-### Visit this URL after you deployed the server
-+ http://localhost:3080/api-doc/
-
-**port 3080 should match your `.env` config**
-
 ## Deploy with Docker
 ```bash
 git clone https://github.com/johnny990628/GHL_backend.git
