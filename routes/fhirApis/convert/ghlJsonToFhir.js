@@ -16,8 +16,8 @@ module.exports = function patientConvertToFHIR(data) {
             }
         };
 
-        const age = new Date().getFullYear() - new Date(birth).getFullYear();
-        const fhirJSON = {
+        let age = new Date().getFullYear() - new Date(birth()).getFullYear();
+        let fhirJSON = {
             resource: {
                 resourceType: "Patient",
                 id: data[i].id,
@@ -28,7 +28,7 @@ module.exports = function patientConvertToFHIR(data) {
                 extension: [
                     {
                         url: "https://twcore.mohw.gov.tw/fhir/StructureDefinition/person-age",
-                        valueInteger: 20,
+                        valueInteger: parseInt(String(age)),
                     },
                 ],
                 identifier: [
@@ -67,7 +67,7 @@ module.exports = function patientConvertToFHIR(data) {
                     },
                 ],
                 gender: data[i].gender === "f" ? "female" : "male",
-                birthDate: birth,
+                birthDate: birth(),
                 address: [
                     {
                         extension: [
