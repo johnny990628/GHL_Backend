@@ -17,6 +17,7 @@ module.exports = function patientConvertToFHIR(data) {
         };
 
         let age = new Date().getFullYear() - new Date(birth()).getFullYear();
+        let addressText = "所屬部門為:" + data[i].department;
         let fhirJSON = {
             resource: {
                 resourceType: "Patient",
@@ -106,6 +107,8 @@ module.exports = function patientConvertToFHIR(data) {
                             },
                         ],
                         */
+                        // text: "臺北市大同區大有里19鄰承德路三段52巷6弄210號2樓B室",
+                        text: addressText,
                         /*
                         line: ["承德路"],
                         city: "臺北市",
