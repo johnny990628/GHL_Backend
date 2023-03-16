@@ -1,0 +1,18 @@
+[
+    {
+        "tag": "00100010",
+        "keyword": "PatientName"
+    },
+    {
+        "tag": "00100020",
+        "keyword": "PatientID"
+    },
+    {
+        "tag": "00100030",
+        "keyword": "PatientBirthDate"
+    },
+    {
+        "tag": "00100040",
+        "keyword": "PatientSex"
+    }
+]

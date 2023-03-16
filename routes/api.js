@@ -15,5 +15,6 @@ router.use('/blood', require('./apis/blood'))
 router.use('/count', require('./apis/count'))
 router.use('/stats', require('./apis/stats'))
 router.use('/dashboard', require('./apis/dashboard'))
+router.use('/dicom', require('./apis/dicom'))
 
 module.exports = router
