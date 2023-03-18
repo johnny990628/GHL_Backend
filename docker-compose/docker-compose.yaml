@@ -1,0 +1,61 @@
+services:
+  # 啟動3個mongo container用以建置Replica Set
+  ghl-mongo1:
+    hostname: ghl-mongo1
+    image: mongo:5.0.8
+    expose:
+      - 27017
+    ports:
+      - 27117:27017 
+    restart: always
+    command: mongod --replSet my-mongo-set
+  ghl-mongo2:
+    hostname: ghl-mongo2
+    image: mongo:5.0.8
+    expose:
+      - 27017
+    ports:
+      - 27217:27017
+    restart: always
+    command: mongod --replSet my-mongo-set
+  ghl-mongo3:
+    hostname: ghl-mongo3
+    image: mongo:5.0.8
+    expose:
+      - 27017
+    ports:
+      - 27317:27017
+    restart: always
+    command: mongod --replSet my-mongo-set
+
+  # 初始化Mongo Replica Server
+  mongoinit:
+    image: mongo:5.0.8
+    # 這個container只會執行一次
+    restart: "on-failure"
+    depends_on:
+      - ghl-mongo1
+      - ghl-mongo2
+      - ghl-mongo3
+    command: >
+      mongo --host ghl-mongo1:27017 --eval 
+      '
+      config = {
+      "_id" : "my-mongo-set",
+      "members" : [
+        {
+          "_id" : 0,
+          "host" : "ghl-mongo1:27017"
+        },
+        {
+          "_id" : 1,
+          "host" : "ghl-mongo2:27017"
+        },
+        {
+          "_id" : 2,
+          "host" : "ghl-mongo3:27017"
+        }
+      ]
+      };
+      rs.initiate(config);
+      '
