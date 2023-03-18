@@ -9,6 +9,9 @@ services:
       - ${MONGO1_HOST_PORT}:27017
     restart: always
     command: mongod --replSet my-mongo-set
+    volumes:
+      - ${MONGO1_DATA_STORAGE}:/data/db
+      - ${MONGO1_CONFIG_STORAGE}:/data/configdb
   KiwiRS-mongo2:
     hostname: KiwiRS-mongo2
     image: mongo:${MONGO_IMAGE_VERSION}
@@ -18,6 +21,9 @@ services:
       - ${MONGO2_HOST_PORT}:27017
     restart: always
     command: mongod --replSet my-mongo-set
+    volumes:
+      - ${MONGO2_DATA_STORAGE}:/data/db
+      - ${MONGO2_CONFIG_STORAGE}:/data/configdb
   KiwiRS-mongo3:
     hostname: KiwiRS-mongo3
     image: mongo:${MONGO_IMAGE_VERSION}
@@ -27,6 +33,9 @@ services:
       - ${MONGO3_HOST_PORT}:27017
     restart: always
     command: mongod --replSet my-mongo-set
+    volumes:
+      - ${MONGO3_DATA_STORAGE}:/data/db
+      - ${MONGO3_CONFIG_STORAGE}:/data/configdb
 
   # 初始化Mongo Replica Server
   mongoinit:
