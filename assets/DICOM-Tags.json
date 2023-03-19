@@ -1,18 +1,38 @@
-[
-    {
-        "tag": "00100010",
-        "keyword": "PatientName"
-    },
-    {
-        "tag": "00100020",
-        "keyword": "PatientID"
-    },
-    {
-        "tag": "00100030",
-        "keyword": "PatientBirthDate"
-    },
-    {
-        "tag": "00100040",
-        "keyword": "PatientSex"
-    }
-]
+{
+    "patient": [
+        {
+            "tag": "00100010",
+            "keyword": "PatientName"
+        },
+        {
+            "tag": "00100020",
+            "keyword": "PatientID"
+        },
+        {
+            "tag": "00100030",
+            "keyword": "PatientBirthDate"
+        },
+        {
+            "tag": "00100040",
+            "keyword": "PatientSex"
+        }
+    ],
+    "study": [
+        {
+            "tag": "00080020",
+            "keyword": "StudyDate"
+        },
+        {
+            "tag": "00080030",
+            "keyword": "StudyTime"
+        },
+        {
+            "tag": "00080050",
+            "keyword": "AccessionNumber"
+        },
+        {
+            "tag": "0020000D",
+            "keyword": "StudyInstanceUID"
+        }
+    ]
+}
