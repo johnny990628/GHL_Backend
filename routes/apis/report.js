@@ -39,7 +39,7 @@ router
     .post(async (req, res) => {
         /* 	
             #swagger.tags = ['Reports']
-            #swagger.description = '加入排程' 
+            #swagger.description = '新增待打報告' 
         */
         try {
             let report = new REPORT({ ...req.body, status: 'pending' })

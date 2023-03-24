@@ -9,18 +9,20 @@ router.route('/').get(async (req, res) => {
             #swagger.description = '取得DICOM JSON Data' 
         */
     try {
-        const { data } = await axios.get(process.env.PACS_URL)
+        const { search, limit, offset, sort, desc } = req.query
+        const { data } = await axios.get(process.env.PACS_URL, { limit })
+
         const result = data.map(d => {
             const patient = dicomTag.patient.reduce((accumulator, currentValue) => {
-                return { ...accumulator, [currentValue.keyword]: d[currentValue.tag]['Value'] || null }
+                return { ...accumulator, [currentValue.keyword]: (d[currentValue.tag]['Value'] && d[currentValue.tag]['Value'][0]) || null }
             }, {})
             const study = dicomTag.study.reduce((accumulator, currentValue) => {
-                return { ...accumulator, [currentValue.keyword]: d[currentValue.tag]['Value'] || null }
+                return { ...accumulator, [currentValue.keyword]: (d[currentValue.tag]['Value'] && d[currentValue.tag]['Value'][0]) || null }
             }, {})
             return { ...patient, ...study }
         })
 
-        return res.status(200).json({ results: result })
+        return res.status(200).json({ results: result, count: result.length })
     } catch (e) {
         return res.status(500).json({ message: e.message })
     }
