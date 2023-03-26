@@ -9,8 +9,11 @@ router.route('/').get(async (req, res) => {
             #swagger.description = '取得DICOM JSON Data' 
         */
     try {
-        const { search, limit, offset, sort, desc } = req.query
-        const { data } = await axios.get(process.env.PACS_URL, { limit })
+        let { search, limit, offset, sort, desc } = req.query
+        offset = offset * limit
+
+        const { data } = await axios.get(process.env.PACS_URL, { params: { limit, offset, PatientID: search } })
+        const { data: count } = await axios.get(process.env.PACS_URL)
 
         const result = data.map(d => {
             const patient = dicomTag.patient.reduce((accumulator, currentValue) => {
@@ -22,7 +25,7 @@ router.route('/').get(async (req, res) => {
             return { ...patient, ...study }
         })
 
-        return res.status(200).json({ results: result, count: result.length })
+        return res.status(200).json({ results: result, count: count.length })
     } catch (e) {
         return res.status(500).json({ message: e.message })
     }
