@@ -6,6 +6,7 @@ const { verifyToken } = require('./auth')
 router.use('/department', require('./apis/department'))
 router.use('/exist', require('./apis/exist'))
 
+
 router.use(verifyToken)
 router.use('/patient', require('./apis/patient'))
 router.use('/report', require('./apis/report'))
@@ -16,5 +17,6 @@ router.use('/count', require('./apis/count'))
 router.use('/stats', require('./apis/stats'))
 router.use('/dashboard', require('./apis/dashboard'))
 router.use('/dicom', require('./apis/dicom'))
+router.use('/worklist', require('./apis/worklist'))
 
 module.exports = router
