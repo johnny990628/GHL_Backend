@@ -52,6 +52,11 @@ node server.js
 **port 3080 should match your `.env` config**
 
 ## Deploy with Docker
+
+### 最新版Docker部署方式已遷移至以下Repo
++ https://github.com/luckypig3400/GLC_Docker-compose_plus_Dockerfiles
+
+### 不再維護的Dockerfile建置參考指令
 ```bash
 git clone https://github.com/johnny990628/GHL_backend.git
 cd GHL_backend
@@ -64,19 +69,3 @@ docker run -d -p 3090:3080 --name GHL_Backend -it --restart=always ghl_backend
 
 ## Author 🎉
 [johnny990628](https://github.com/johnny990628)
-
-## References
-+ [Docker Port Mapping](https://www.baeldung.com/linux/assign-port-docker-container#:~:text=Port%20mapping%20is%20used%20to,redirected%20into%20the%20Docker%20container.)
-+ [Docker node container exited](https://stackoverflow.com/questions/44288504/why-is-my-docker-node-container-exiting)
-+ [Docker Run with command](https://docs.docker.com/engine/reference/commandline/run/)
-+ [Install specific NodeJS version in Ubuntu](https://www.educative.io/answers/how-to-install-nodejs-on-ubuntu)
-+ [Day5: 實作撰寫第一個 Dockerfile](https://ithelp.ithome.com.tw/articles/10191016)
-+ [Docker Packaging your software](https://docs.docker.com/build/building/packaging/)
-+ [解決Dockerfile RUN npm install找不到package.json](https://ithelp.ithome.com.tw/articles/10204227)
-+ [Node bcrypt套件在Linux上Error](https://stackoverflow.com/questions/15809611/bcrypt-invalid-elf-header-when-running-node-app)
-+ [在Docker內無需使用pm2](https://stackoverflow.com/questions/51191378/what-is-the-point-of-using-pm2-and-docker-together)
-+ [Run MongoDB as background service in Linux](https://serverfault.com/questions/157705/how-can-i-run-mongod-in-the-background-on-unix-mac-osx)
-+ [Dockerfile CMD multiple commands](https://stackoverflow.com/questions/46797348/docker-cmd-exec-form-for-multiple-command-execution)
-+ [Push image to Docker Hub](https://docs.docker.com/engine/reference/commandline/push/)
-+ [MongoDB insert data](https://www.mongodb.com/docs/manual/reference/method/db.collection.insert/)
-+ [透過mongosh cli直接新增資料到MongoDB](https://stackoverflow.com/questions/4837673/how-to-execute-mongo-commands-through-shell-scripts)
