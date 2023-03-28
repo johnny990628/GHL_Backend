@@ -53,7 +53,7 @@ node server.js
 
 ## Deploy with Docker
 
-### 最新版Docker部署方式已遷移至以下Repo
+### 最新版Docker部署方式已遷移至以下Repo 
 + https://github.com/luckypig3400/GLC_Docker-compose_plus_Dockerfiles
 
 ### 不再維護的Dockerfile建置參考指令
