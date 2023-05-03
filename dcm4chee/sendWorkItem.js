@@ -29,7 +29,7 @@ const sendWorkItem = async (patient) => {
         vr: "PN",
         Value: [
           {
-            Alphabetic: `${FirstName}^${LastName}`,
+            Alphabetic: name,
           },
         ],
       },
