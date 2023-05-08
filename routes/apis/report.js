@@ -42,7 +42,7 @@ router
             #swagger.description = '新增待打報告' 
         */
         try {
-            let report = new REPORT({ ...req.body, status: 'pending' })
+            let report = new REPORT({ ...req.body })
             report = await report.save()
             return res.status(200).json(report)
         } catch (e) {

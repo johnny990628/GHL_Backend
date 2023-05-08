@@ -24,10 +24,11 @@ scheduleSchema.virtual('reports', {
     localField: 'patientID',
     foreignField: 'patientID',
 })
+
 scheduleSchema.virtual('blood', {
     ref: 'Blood',
-    localField: 'patientID',
-    foreignField: 'patientID',
+    localField: '_id',
+    foreignField: 'scheduleID',
     justOne: true,
 })
 

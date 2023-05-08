@@ -35,12 +35,12 @@ router.route('/login').post(async (req, res) => {
         if (await bcrypt.compare(password, user.password)) {
             if (user.role === 0) return res.status(403).json({ message: '使用者權限不足，等待管理員審核' })
             const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRECT_KEY, {
-                expiresIn: 6000000,
+                expiresIn: 86400000,
             })
             user.password = null
             return res
                 .cookie('accessToken', accessToken, {
-                    maxAge: 6000000,
+                    maxAge: 86400000,
                     // maxAge: 6000,
                     secure: false, //set true if using https
                     httpOnly: true, //can't access from javascript

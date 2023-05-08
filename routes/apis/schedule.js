@@ -44,10 +44,6 @@ router
         try {
             const { patientID, scheduleID, status } = req.body
             const schedule = await SCHEDULE.findOneAndUpdate({ _id: scheduleID }, { $set: { status } }, { returnDocument: 'after' })
-            if (patientID) {
-                await REPORT.findOneAndDelete({ patientID, status: 'pending' })
-                await BLOOD.findOneAndDelete({ patientID })
-            }
 
             if (!schedule) return res.status(404).json({ message: '找不到排程資料' })
             return res.status(200).json(schedule)
@@ -59,7 +55,7 @@ router
         try {
             const { patientID } = req.body
             const schedule = await SCHEDULE.findOneAndDelete({ patientID })
-            await REPORT.findOneAndDelete({ patientID, status: 'pending' })
+            await REPORT.findOneAndDelete({ patientID })
             await BLOOD.findOneAndDelete({ patientID })
             if (!schedule) return res.status(404).json({ message: '找不到排程資料' })
             return res.status(200).json(schedule)

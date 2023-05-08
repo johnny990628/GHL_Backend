@@ -77,6 +77,14 @@ router
                         as: 'creator',
                     },
                 },
+                {
+                    $lookup: {
+                        from: 'departments',
+                        localField: 'department',
+                        foreignField: '_id',
+                        as: 'department',
+                    },
+                },
 
                 { $sort: { [sort]: Number(desc) } },
                 { $skip: Number(limit) * Number(offset) },
@@ -86,6 +94,7 @@ router
                         blood: { $arrayElemAt: ['$blood', 0] },
                         schedule: { $arrayElemAt: ['$schedule', 0] },
                         creator: { $arrayElemAt: ['$creator', 0] },
+                        department: { $arrayElemAt: ['$department', 0] },
                     },
                 },
                 {
