@@ -91,6 +91,7 @@ router
                 { $limit: Number(limit) },
                 {
                     $addFields: {
+                        report: { $arrayElemAt: ['$report', 0] },
                         blood: { $arrayElemAt: ['$blood', 0] },
                         schedule: { $arrayElemAt: ['$schedule', 0] },
                         creator: { $arrayElemAt: ['$creator', 0] },

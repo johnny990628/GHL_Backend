@@ -13,13 +13,13 @@ router
             #swagger.description = '取得排程' 
         */
         try {
-            const { procedureCode, patientID } = req.query
+            const { patientID, status } = req.query
 
             let query = {}
-            if (procedureCode) query.procedureCode = procedureCode
             if (patientID) query.patientID = patientID
+            if (status && status !== 'all') query.status = status
 
-            const schedule = await SCHEDULE.find(query).populate('patient').populate('reports').populate('blood')
+            const schedule = await SCHEDULE.find(query).populate('patient').populate('report').populate('blood')
             const count = await SCHEDULE.find(query).countDocuments()
 
             return res.status(200).json({ results: schedule, count })
@@ -53,10 +53,10 @@ router
     })
     .delete(async (req, res) => {
         try {
-            const { patientID } = req.body
-            const schedule = await SCHEDULE.findOneAndDelete({ patientID })
-            await REPORT.findOneAndDelete({ patientID })
-            await BLOOD.findOneAndDelete({ patientID })
+            const { scheduleID } = req.body
+            const schedule = await SCHEDULE.findOneAndDelete({ _id: scheduleID })
+            await REPORT.findOneAndDelete({ _id: schedule.reportID })
+            await BLOOD.findOneAndDelete({ scheduleID })
             if (!schedule) return res.status(404).json({ message: '找不到排程資料' })
             return res.status(200).json(schedule)
         } catch (e) {

@@ -87,6 +87,7 @@ router
             const { reportID } = req.params
             const report = await REPORT.findOneAndDelete({ _id: reportID })
             const schedule = await SCHEDULE.findOneAndDelete({ reportID })
+            await BLOOD.findOneAndDelete({ scheduleID: schedule._id })
             if (!report) return res.status(404).json({ message: '找不到報告資料' })
             return res.status(200).json(report)
         } catch (e) {
