@@ -56,7 +56,7 @@ router
             const { scheduleID } = req.body
             const schedule = await SCHEDULE.findOneAndDelete({ _id: scheduleID })
             await REPORT.findOneAndDelete({ _id: schedule.reportID })
-            await BLOOD.findOneAndDelete({ scheduleID })
+            await BLOOD.findOneAndDelete({ _id: schedule.bloodID })
             if (!schedule) return res.status(404).json({ message: '找不到排程資料' })
             return res.status(200).json(schedule)
         } catch (e) {

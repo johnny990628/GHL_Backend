@@ -5,6 +5,7 @@ const scheduleSchema = new Schema(
     {
         patientID: { type: String, required: true },
         reportID: { type: String },
+        bloodID: { type: String },
         StudyInstanceUID: { type: String, required: false },
         procedureCode: { type: String, required: true },
         status: { type: String, required: true },
@@ -28,8 +29,8 @@ scheduleSchema.virtual('report', {
 
 scheduleSchema.virtual('blood', {
     ref: 'Blood',
-    localField: '_id',
-    foreignField: 'scheduleID',
+    localField: 'bloodID',
+    foreignField: '_id',
     justOne: true,
 })
 
