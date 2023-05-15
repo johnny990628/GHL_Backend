@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const eventSchema = new Schema(
     {
         name: { type: String, required: true },
-        departmentID: { type: String },
+        departmentID: { type: String, required: true },
         datetime: { type: Date, default: Date.now },
         active: { type: Boolean, default: true },
     },

@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const patientSchema = new Schema(
     {
@@ -24,12 +24,12 @@ const patientSchema = new Schema(
             type: String,
             required: true,
         },
-        department: String,
+        departmentID: String,
         address: String,
         creator: Schema.ObjectId,
     },
     { timestamps: true }
-);
+)
 
 // patientSchema.virtual('schedule', {
 //     ref: 'Schedule',
@@ -51,6 +51,6 @@ const patientSchema = new Schema(
 //     justOne: false,
 // })
 
-patientSchema.set("toJSON", { virtuals: true });
+patientSchema.set('toJSON', { virtuals: true })
 
-module.exports = mongoose.model("Patient", patientSchema);
+module.exports = mongoose.model('Patient', patientSchema)
