@@ -4,6 +4,7 @@ const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { USER } = require('../models/user')
+const EVENT = require('../models/event')
 
 const verifyToken = (req, res, next) => {
     const accessToken = req.cookies.accessToken || (req.headers['authorization'] ? req.headers['authorization'].split(' ').pop() : null)
@@ -19,6 +20,20 @@ const verifyToken = (req, res, next) => {
         })
     } else {
         return res.status(403).json({ message: 'Need a token' })
+    }
+}
+
+const eventMiddleware = async (req, res, next) => {
+    try {
+        const eventID = req.cookies.event
+        if (eventID) {
+            const event = await EVENT.findOne({ _id: eventID })
+            req.event = eventID
+            req.department = event.departmentID
+        }
+        return next()
+    } catch (e) {
+        return next()
     }
 }
 
@@ -104,4 +119,4 @@ router.route('/verify').post(async (req, res) => {
     }
 })
 
-module.exports = { router, verifyToken }
+module.exports = { router, verifyToken, eventMiddleware }

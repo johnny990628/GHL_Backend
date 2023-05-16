@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
 
-const { verifyToken } = require('./auth')
+const { verifyToken, eventMiddleware } = require('./auth')
 
 router.use('/department', require('./apis/department'))
 router.use('/exist', require('./apis/exist'))
 
 router.use(verifyToken)
+router.use(eventMiddleware)
 router.use('/patient', require('./apis/patient'))
 router.use('/report', require('./apis/report'))
 router.use('/user', require('./apis/user'))

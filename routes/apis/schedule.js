@@ -14,13 +14,22 @@ router
         */
         try {
             const { patientID, status } = req.query
+            const { event } = req
 
+            const eventQuery = event
+                ? {
+                      eventID: event,
+                  }
+                : {}
             let query = {}
             if (patientID) query.patientID = patientID
             if (status && status !== 'all') query.status = status
 
-            const schedule = await SCHEDULE.find(query).populate('patient').populate('report').populate('blood')
-            const count = await SCHEDULE.find(query).countDocuments()
+            const schedule = await SCHEDULE.find({ ...query, ...eventQuery })
+                .populate('patient')
+                .populate('report')
+                .populate('blood')
+            const count = await SCHEDULE.find({ ...query, ...eventQuery }).countDocuments()
 
             return res.status(200).json({ results: schedule, count })
         } catch (e) {
@@ -33,7 +42,8 @@ router
             #swagger.description = '新增排程' 
         */
         try {
-            let schedule = new SCHEDULE(req.body)
+            const { event } = req
+            let schedule = new SCHEDULE({ ...req.body, eventID: event || '' })
             schedule = await schedule.save()
             return res.status(200).json(schedule)
         } catch (e) {

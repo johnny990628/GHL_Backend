@@ -55,6 +55,25 @@ router
             return res.status(500).json({ message: e.message })
         }
     })
+    .post(async (req, res) => {
+        try {
+            const { _id } = req.params
+            if (_id === 'all') return res.clearCookie('event').status(200).json({ message: '清除活動資料' })
+            else
+                return res
+                    .cookie('event', _id, {
+                        maxAge: 86400000,
+                        // maxAge: 6000,
+                        secure: false, //set true if using https
+                        httpOnly: true, //can't access from javascript
+                        sameSite: true,
+                    })
+                    .status(200)
+                    .json({ message: 'register event successful', _id })
+        } catch (e) {
+            return res.status(500).json({ message: e.message })
+        }
+    })
     .patch(async (req, res) => {
         /* 	
             #swagger.tags = ['Event']

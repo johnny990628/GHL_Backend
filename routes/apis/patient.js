@@ -15,7 +15,14 @@ router
         */
         try {
             const { limit, offset, search, sort, desc, status } = req.query
+            const { event, department } = req
             if (!limit || !offset) return res.status(400).json({ message: 'Need a limit and offset' })
+
+            const eventQuery = event
+                ? {
+                      departmentID: department,
+                  }
+                : {}
 
             const searchRe = new RegExp(search)
             const searchQuery = search
@@ -44,6 +51,7 @@ router
             // }
 
             const patients = await PATIENT.aggregate([
+                { $match: eventQuery },
                 { $match: searchQuery },
                 {
                     $lookup: {
@@ -108,7 +116,7 @@ router
                 },
             ])
 
-            const count = await PATIENT.find(searchQuery).countDocuments()
+            const count = await PATIENT.find({ ...eventQuery, ...searchQuery }).countDocuments()
 
             // const patients = await PATIENT.find(searchQuery)
             //     .sort({ [sort]: desc })
