@@ -7,6 +7,7 @@ const eventSchema = new Schema(
         departmentID: { type: String, required: true },
         datetime: { type: Date, default: Date.now },
         active: { type: Boolean, default: true },
+        creator: Schema.ObjectId,
     },
     { timestamps: true }
 )
